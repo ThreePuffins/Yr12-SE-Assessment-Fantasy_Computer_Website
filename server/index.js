@@ -6,12 +6,12 @@ const PORT = 5500;
 
 app.use(
     cors({
-        origin: ["http://127.0.0.1"],
+        origin: ["http://localhost:5501"],
     })
 )
 
 app.get("/", (req, res) => {
-    res.send("hi");
+    res.sendFile("/client/homepage.html");
 });
 
 app.get("/api/hello", (req, res) => {
@@ -19,5 +19,5 @@ app.get("/api/hello", (req, res) => {
 });
 
 app.listen(PORT, () => {
-    console.log(`hee-ho check out http://127.0.0.1:${PORT}`);
+    console.log(`hee-ho check out http://localhost:${PORT}`);
 });
