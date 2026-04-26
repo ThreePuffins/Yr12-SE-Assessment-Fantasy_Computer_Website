@@ -1,5 +1,7 @@
 const express = require("express");
 const cors = require("cors");
+const path = require("path");
+const ejs = require('ejs');
 
 const app = express();
 const PORT = 5500;
@@ -10,9 +12,21 @@ app.use(
     })
 )
 
-app.get("/", (req, res) => {
-    res.sendFile("/client/homepage.html");
+app.use(express.static('client'))
+
+app.set('view engine', 'ejs');
+
+app.set('views', './views');
+
+
+app.get('/g/:g', (req, res) => {
+  const data = {
+    title: req.params.g
+  };
+
+  res.render('index', data);
 });
+
 
 app.get("/api/hello", (req, res) => {
     res.json({ message: "hi from a pea-eye"});
