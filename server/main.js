@@ -3,7 +3,7 @@ const cors = require("cors");
 const path = require("path");
 const ejs = require('ejs');
 
-
+const database = require("./database.js")
 
 const app = express();
 const PORT = 5500;
@@ -26,14 +26,22 @@ app.get('/g/:g', (req, res) => {
     title: req.params.g
   };
 
+
+  database.get((err, rows) => {
+      if (err) {console.log(err);}
+      else { console.log(rows) }
+  })
+
   res.render('index', data);
 });
 
 
 app.get("/api/hello", (req, res) => {
-    res.json({ message: "hi from a pea-eye"});
+  res.json({message: "hello beijing wasgud"});
 });
 
 app.listen(PORT, () => {
     console.log(`hee-ho check out http://localhost:${PORT}`);
+    console.log();
+    //res.json(database.get()[0].name);
 });
