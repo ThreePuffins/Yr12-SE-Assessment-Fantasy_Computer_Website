@@ -6,11 +6,11 @@ const ejs = require('ejs');
 const database = require("./database.js")
 
 const app = express();
-const PORT = 5500;
+const PORT = 8080;
 
 app.use(
     cors({
-        origin: ["http://localhost:5501"],
+        origin: ["http://localhost:8080"],
     })
 )
 
@@ -42,6 +42,5 @@ app.get("/api/hello", (req, res) => {
 
 app.listen(PORT, () => {
     console.log(`hee-ho check out http://localhost:${PORT}`);
-    console.log();
     //res.json(database.get()[0].name);
 });
