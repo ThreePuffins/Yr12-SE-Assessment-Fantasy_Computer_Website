@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <link rel="stylesheet" href="signup.css">
+    <title>Sign up</title>
+</head>
+
+<!-- Button to open the modal -->
+<button onclick="document.getElementById('id01').style.display='block'">Sign Up</button>
+
+<!-- The Modal (contains the Sign Up form) -->
+<div id="id01" class="modal">
+  <form class="modal-content" action="/action_page.php">
+    <div class="container">
+      <h1>Sign Up</h1>
+      <p>fill ts in already.</p>
+      <hr>
+      <label for="email"><b>Email</b></label>
+      <input type="text" placeholder="Enter Email" name="email" required>
+
+      <label for="psw"><b>Password</b></label>
+      <input type="password" placeholder="Enter Password" name="psw" required>
+
+      <label for="psw-repeat"><b>Password but again</b></label>
+      <input type="password" placeholder="Enter Password But Again" name="psw-repeat" required>
+
+      <label for="psw-diff"><b>Password but different</b></label>
+      <input type="password" placeholder="Enter Password But Different" name="psw-diff" required>
+
+      <label>
+        <input type="checkbox" checked="checked" names="remember" style="margin-bottom:15px"> tick me (please)
+      </label>
+
+      <div class="clearfix">
+        <button type="button" onclick="document.getElementById('id01').style.display='none'" class="cancelbtn">Cancel</button>
+        <button type="submit" class="signup">Sign Up</button>
+      </div>
+    </div>
+  </form>
+</div>
+
+<script src="signup.js" type="module"></script>
