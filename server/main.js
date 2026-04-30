@@ -2,8 +2,11 @@ const express = require("express");
 const cors = require("cors");
 const path = require("path");
 const ejs = require('ejs');
+const crypto = require('crypto');
 
-const database = require("./database.js")
+const database = require("./database.js");
+//const { constants } = require("fs/promises");
+const hash = crypto.createHash('sha256');
 
 const app = express();
 const PORT = 8080;
@@ -52,6 +55,13 @@ app.get('/g/:id', (req, res) => {
     }
     else res.render('fuck');
   })
+});
+
+app.get("/sign_up_process", (req, res) => {
+  params = new URLSearchParams(req.query);
+  
+  console.log(hash.update(req.query.psw).digest('base64'));
+
 });
 
 app.get("/api/hello", (req, res) => {
