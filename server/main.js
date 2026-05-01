@@ -6,7 +6,6 @@ const crypto = require('crypto');
 
 const database = require("./database.js");
 //const { constants } = require("fs/promises");
-const hash = crypto.createHash('sha256');
 
 const app = express();
 const PORT = 8080;
@@ -28,7 +27,7 @@ app.get('/signup', (req, res) => {
 app.get('/u/:id', (req, res) => {
   const id = req.params.id
 
-  database.get_user(id, (err, rows) => {
+  database.get_user_by_id(id, (err, rows) => {
     if (err) { console.log(err); }
     else if (rows) {
       const data = {
@@ -60,8 +59,11 @@ app.get('/g/:id', (req, res) => {
 app.get("/sign_up_process", (req, res) => {
   params = new URLSearchParams(req.query);
   
-  console.log(hash.update(req.query.psw).digest('base64'));
+  hashed = crypto.createHash('sha256').update(req.query.psw).digest('base64');
+  hashed2 = crypto.createHash('sha256').update(req.query.psw2).digest('base64');
+  database.create_user(req.query.username, req.query.email, hashed);
 
+  res.redirect("/login");
 });
 
 app.get("/api/hello", (req, res) => {
