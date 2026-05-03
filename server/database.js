@@ -47,9 +47,19 @@ function get_user_by_id(id, cb) {
     })
 }
 
+function get_user_by_username(username, cb) {
+    const stmt = db.prepare("SELECT * FROM users WHERE username = (?)");
+    stmt.all(username, (err, rows) => {
+        if (err) {
+            cb(err, null);
+            return;
+        }
+        cb(null, rows[0]);
+    })
+}
+
 function create_user(username, email, password) {
     const stmt = db.prepare("INSERT INTO users (username, email, password) VALUES (?, ?, ?)");
     stmt.all([username, email, password])
-    console.log()
 }
-module.exports = { get_game, get_user_by_id, create_user};
+module.exports = { get_game, get_user_by_id, create_user, get_user_by_username};
