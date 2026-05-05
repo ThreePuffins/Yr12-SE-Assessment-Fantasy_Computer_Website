@@ -19,6 +19,7 @@ app.use(express.static('public'));
 // TODO: make this safer
 const COOKIE_SECRET = "YGU&(01y83r8yhas9G(uf01hOISHfu913h";
 app.use(cookieParser(COOKIE_SECRET));
+app.use(express.urlencoded({ extended: true }));
 
 app.set('view engine', 'ejs');
 app.set('views', './views');
@@ -74,32 +75,28 @@ app.get('/g/:id', (req, res) => {
   })
 });
 
-app.get("/sign_up_process", (req, res) => {
-  hashed = crypto.createHash('sha256').update(req.query.psw).digest('base64');
-  hashed2 = crypto.createHash('sha256').update(req.query.psw2).digest('base64');
-  database.create_user(req.query.username, req.query.email, hashed);
+app.post("/sign_up_process", (req, res) => {
+  hashed = crypto.createHash('sha256').update(req.body.psw).digest('base64');
+  hashed2 = crypto.createHash('sha256').update(req.body.psw2).digest('base64');
+  database.create_user(req.body.username, req.body.email, hashed);
+  console.log("after created user");
 
   res.redirect("/login");
 });
 
-app.get("/log_in_process", (req, res) => {
-  database.get_user_by_username(req.query.username, (err, rows) => {
+app.post("/log_in_process", (req, res) => {
+  database.get_user_by_username(req.body.username, (err, rows) => {
     if (err) { console.log(err); }
     else if (rows) {
-      hashed = crypto.createHash('sha256').update(req.query.psw).digest('base64');
-      const data = {
-        username: rows.username,
-        password: rows.password,
-        email: rows.email
-      }
+      hashed = crypto.createHash('sha256').update(req.body.psw).digest('base64');
       if (hashed = rows.password) {
-        res.render('user', data);
         res.cookie('user_id', rows.id, {
           maxAge: 60 * 60 * 1000, // 1 hour
           httpOnly: true,
           secure: true,
           sameSite: 'strict'
         });
+        res.redirect(`/u/${rows.id}`);
       }
     }
     else res.render('fuck');
@@ -107,7 +104,7 @@ app.get("/log_in_process", (req, res) => {
 });
 
 
-app.get("/api/hello", (req, res) => {
+app.post("/api/hello", (req, res) => {
   res.json({message: "hello beijing wasgud"});
 });
 

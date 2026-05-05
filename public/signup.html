@@ -10,22 +10,22 @@
 
 <!-- The Modal (contains the Sign Up form) -->
 <div id="id01" class="modal">
-  <form class="modal-content" action="/sign_up_process">
+  <form id="signupForm" class="modal-content" method="POST" action="/sign_up_process">
     <div class="container">
       <h1>Sign Up</h1>
       <p>fill ts in already.</p>
       <hr>
       <label for="email"><b>Email</b></label>
-      <input type="text" placeholder="Enter Email" name="email" required>
+      <input id="email" type="text" placeholder="Enter Email" name="email" required>
 
       <label for="username"><b>Username</b></label>
-      <input type="text" placeholder="Enter Username" name="username" required>
+      <input id="username" type="text" placeholder="Enter Username" name="username" required>
 
       <label for="psw"><b>Password</b></label>
-      <input type="password" placeholder="Enter Password" name="psw" required>
+      <input id="psw" type="password" placeholder="Enter Password" name="psw" required>
 
       <label for="psw2"><b>Password but again</b></label>
-      <input type="password" placeholder="Enter Password But Again" name="psw2" required>
+      <input id="psw2" type="password" placeholder="Confirm Password" name="psw2" required>
 
       <label>
         <input type="checkbox" checked="checked" names="remember" style="margin-bottom:15px"> tick me (please)
