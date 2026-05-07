@@ -22,7 +22,7 @@ app.use(cookieParser(COOKIE_SECRET));
 app.use(express.urlencoded({ extended: true }));
 
 app.set('view engine', 'ejs');
-app.set('views', './views');
+app.set('views', './public/views');
 
 app.get('/signup', (req, res) => {
   res.sendFile(path.join(__dirname, '../public', 'signup.html'));
