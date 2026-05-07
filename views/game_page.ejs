@@ -1,0 +1,13 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <link href="/css/game_page.css" rel="stylesheet" type="text/css">
+  <title><%= name %></title>
+</head>
+<body>
+  <h1><%= name %></h1>
+  <!-- style="image-rendering: pixelated; display: block; cursor: default;" -->
+  <canvas id="canvas" oncontextmenu="event.preventDefault()" onmousedown="window.focus()"></canvas>
+  <script src="/js/game_page.js" type="module"></script>
+</body>
+</html>

@@ -69,7 +69,7 @@ app.get('/g/:id', (req, res) => {
       const data = {
         name: rows.name
       }
-      if (data.name) res.render('game', data);
+      if (data.name) res.render('game_page', data);
     }
     else res.render('fuck');
   })
