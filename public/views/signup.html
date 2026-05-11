@@ -1,17 +1,12 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <link rel="stylesheet" href="./css/signup.css">
-    <title>Sign up</title>
+    <link rel="stylesheet" href="/css/signup.css">
 </head>
 
-<!-- Button to open the modal -->
-<button onclick="document.getElementById('id01').style.display='block'">Sign Up</button>
-
-<!-- The Modal (contains the Sign Up form) -->
-<div id="id01" class="modal">
-  <form id="signupForm" class="modal-content" method="POST" action="/sign_up_process">
-    <div class="container">
+<div id="signup" class="modal">
+  <form id="signup-form" class="modal-content" method="POST" action="/sign_up_process">
+    <div class="form-container">
       <h1>Sign Up</h1>
       <p>fill ts in already.</p>
       <hr>
@@ -32,11 +27,11 @@
       </label>
 
       <div class="clearfix">
-        <button type="button" onclick="document.getElementById('id01').style.display='none'" class="cancelbtn">Cancel</button>
+        <button type="button" onclick="document.getElementById('signup').style.display='none'" class="cancelbtn">Cancel</button>
         <button type="submit" class="signupbtn">Sign Up</button>
       </div>
     </div>
   </form>
+  <script src="/js/signup.js" type="module"></script>
 </div>
 
-<script src="./js/signup.js" type="module"></script>

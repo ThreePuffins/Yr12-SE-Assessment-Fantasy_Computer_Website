@@ -1,16 +1,17 @@
-var modal = document.getElementById('id01');
+var modal = document.getElementById('signup');
 
-window.onclick = function(event) {
+window.addEventListener('click', (event) => {
     if (event.target == modal) {
         modal.style.display = "none";
     }
-}
+});
 
-document.getElementById('signupForm').addEventListener('submit', function(event) {
+var signupform = document.getElementById('signup-form')
 
-      const username = document.getElementById('username').value;
-      const password = document.getElementById('psw').value;
-      const confirmPassword = document.getElementById('psw2').value;
+signupform.addEventListener('submit', function(event) {
+      const username = signupform.getElementById('username').value;
+      const password = signupform.getElementById('psw').value;
+      const confirmPassword = signupform.getElementById('psw2').value;
 
       // Validate fields are not empty
       if (!username || !password || !confirmPassword) {
@@ -32,4 +33,4 @@ document.getElementById('signupForm').addEventListener('submit', function(event)
           event.preventDefault();
           return;
       }
-  });
+});

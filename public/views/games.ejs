@@ -1,11 +1,11 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>Wizem</title>
   <link href="/css/games.css" rel="stylesheet" type="text/css">
 </head>
 <body>
-    <div style="display:flex;flex-direction:row;flex-wrap: wrap; padding:4px;">
+    <%- include('header.ejs') %>
+    <div style="display:flex; flex-direction:row; flex-wrap: wrap; padding:4px;">
         <% if (games.length > 0) { %>
             <% games.forEach(function(game) { %>
             <div class="game" id="g<%= game.id %>">

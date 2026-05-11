@@ -1,20 +1,20 @@
-var modal = document.getElementById('id01');
+var modal = document.getElementById('login');
 
-window.onclick = function(event) {
+window.addEventListener('click', (event) => {
     if (event.target == modal) {
         modal.style.display = "none";
     }
-}
+});
 
-document.getElementById('loginForm').addEventListener('submit', function(event) {
+var loginform = document.getElementById('login-form')
 
-      const username = document.getElementById('username').value;
-      const password = document.getElementById('psw').value;
+loginform.addEventListener('submit', function(event) {
+      const username = loginform.getElementById('username').value;
+      const password = loginform.getElementById('psw').value;
 
-      // Validate fields are not empty
-      if (!username || !password || !confirmPassword) {
-          alert('All fields are required.');
+      if (!username || !password) {
+          alert('All fields are required for login.');
           event.preventDefault();
           return;
       }
-  });
+});

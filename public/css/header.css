@@ -1,0 +1,49 @@
+body, .website-nav, .account, ul { margin: 0; padding: 0; }
+
+.container {
+    padding-right: 15px;
+    padding-left: 15px;
+    margin-right: auto;
+    margin-left: auto;
+    display: block;
+    height: 50px;
+    align-content: center;
+}
+
+li {display: block;}
+
+li, & a {  
+    position: relative;
+    font-size: 24px;
+    color: #121415;
+    text-decoration: none;
+    margin: 0;
+    text-align: center;
+    padding: 5px 8px;
+}
+
+li:hover, & a:hover {
+    color: #ffffff;
+}
+
+.navbar {
+    border-width: 0px;
+    background-color: #6a97b2;
+    position: relative;
+    display: block;
+    margin-bottom: 20px;
+    padding: 0;
+}
+
+
+.account {
+    & li {
+        float: right;
+    }
+}
+
+.website-nav {
+    & li {
+        float: left;
+    }
+}
