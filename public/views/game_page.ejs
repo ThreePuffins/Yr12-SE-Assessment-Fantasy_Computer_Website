@@ -5,6 +5,7 @@
   <title><%= name %></title>
 </head>
 <body>
+  <%- include('header.ejs') %>
   <h1><%= name %></h1>
   <!-- style="image-rendering: pixelated; display: block; cursor: default;" -->
   <canvas id="canvas" oncontextmenu="event.preventDefault()" onmousedown="window.focus()"></canvas>
