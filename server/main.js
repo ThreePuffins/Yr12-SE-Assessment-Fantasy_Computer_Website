@@ -24,13 +24,9 @@ app.use(express.urlencoded({ extended: true }));
 app.set('view engine', 'ejs');
 app.set('views', './public/views');
 
-app.get('/signup', (req, res) => {
-  res.sendFile(path.join(__dirname, '../public', 'signup.html'));
-})
-
-app.get('/login', (req, res) => {
-  res.sendFile(path.join(__dirname, '../public', 'login.html'));
-})
+app.get('/', (req, res) => {
+  res.render('index')
+});
 
 app.get('/u/:id', (req, res) => {
   const id = req.params.id
@@ -92,9 +88,8 @@ app.post("/sign_up_process", (req, res) => {
   hashed = crypto.createHash('sha256').update(req.body.psw).digest('base64');
   hashed2 = crypto.createHash('sha256').update(req.body.psw2).digest('base64');
   database.create_user(req.body.username, req.body.email, hashed);
-  console.log("after created user");
 
-  res.redirect("/login");
+  res.redirect("/");
 });
 
 app.post("/log_in_process", (req, res) => {
@@ -104,7 +99,7 @@ app.post("/log_in_process", (req, res) => {
       hashed = crypto.createHash('sha256').update(req.body.psw).digest('base64');
       if (hashed = rows.password) {
         res.cookie('user_id', rows.id, {
-          maxAge: 60 * 60 * 1000, // 1 hour
+          maxAge: 60 * 60 * 1000, 
           httpOnly: true,
           secure: true,
           sameSite: 'strict'
@@ -114,11 +109,6 @@ app.post("/log_in_process", (req, res) => {
     }
     else res.render('fuck');
   })
-});
-
-
-app.post("/api/hello", (req, res) => {
-  res.json({message: "hello beijing wasgud"});
 });
 
 app.use(function(req, res) {

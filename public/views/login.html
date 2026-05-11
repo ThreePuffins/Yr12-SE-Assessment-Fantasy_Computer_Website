@@ -1,13 +1,11 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <link rel="stylesheet" href="./css/login.css">
-    <title>Log In</title>
+    <link rel="stylesheet" href="./css/signup.css">
 </head>
 
-<!-- The Modal (contains the Sign Up form) -->
-<div id="id01" class="modal">
-  <form id="loginForm" class="modal-content" method="post" action="/log_in_process">
+<div id="login" class="modal">
+  <form id="login-form" class="modal-content" method="post" action="/log_in_process">
     <div class="container">
       <h1>Log In</h1>
       <p>fill ts in already.</p>
@@ -24,11 +22,11 @@
       </label>
 
       <div class="clearfix">
-        <button type="button" onclick="document.getElementById('id01').style.display='none'" class="cancelbtn">Cancel</button>
-        <button type="submit" class="loginbtn">Log In</button>
+        <button type="button" onclick="document.getElementById('login').style.display='none'" class="cancelbtn">Cancel</button>
+        <button type="submit" class="signupbtm">Log In</button>
       </div>
     </div>
   </form>
+  <script src="../js/login.js" type="module"></script>
 </div>
 
-<script src="./js/login.js" type="module"></script>

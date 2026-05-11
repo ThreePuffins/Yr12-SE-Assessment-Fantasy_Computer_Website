@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<head>
+    <title>Wizem</title>
+    <link href="/css/header.css" rel="stylesheet" type="text/css">
+</head>
+<nav class="navbar">
+    <div class="container"> 
+        <ul class="website-nav">
+            <li><a href="/">Home</a></li>
+            <li><a href="/about">About</a></li>
+            <li><a href="/games">Games</a></li>
+        </ul>
+        <ul class="account">
+            <li onclick="document.getElementById('signup').style.display='block'; ">Signup</li>
+            <li onclick="document.getElementById('login').style.display='block';">Login</li>
+        </ul>
+    </div>
+</nav>
+
+<%- include('signup.html') %>
+<%- include('login.html') %>
