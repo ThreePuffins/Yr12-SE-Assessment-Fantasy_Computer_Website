@@ -1,21 +1,25 @@
-body { margin: 0; }
+body, .website-nav, .account, ul { margin: 0; padding: 0; }
 
 .container {
-    padding: 20px;            
-    min-height: 100px;
+    padding-right: 15px;
+    padding-left: 15px;
+    margin-right: auto;
+    margin-left: auto;
+    display: block;
+    height: 50px;
+    align-content: center;
 }
+
+li {display: block;}
 
 li, & a {  
     position: relative;
-    display: block;
-    box-sizing: border-box;
     font-size: 24px;
     color: #2e434f;
     text-decoration: none;
-}
-
-li {
-    padding: 10px 15px;
+    margin: 0;
+    text-align: center;
+    padding: 5px 8px;
 }
 
 li:hover, & a:hover {
@@ -26,12 +30,13 @@ li:hover, & a:hover {
     border-width: 0px;
     background-color: #6a97b2;
     position: relative;
-    min-height: 50px;
+    display: block;
     margin-bottom: 20px;
+    padding: 0;
 }
 
+
 .account {
-    margin-right: 15px;
     & li {
         float: right;
     }
