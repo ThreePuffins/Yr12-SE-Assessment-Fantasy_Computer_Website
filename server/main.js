@@ -75,6 +75,19 @@ app.get('/g/:id', (req, res) => {
   })
 });
 
+app.get('/games', (req, res) => {
+  database.get_games((err, rows) => {
+    if (err) { console.log(err); }
+    else if (rows) {
+      const data = {
+        games: rows
+      }
+      res.render('games', data);
+    }
+    else res.render('fuck');
+  })
+});
+
 app.post("/sign_up_process", (req, res) => {
   hashed = crypto.createHash('sha256').update(req.body.psw).digest('base64');
   hashed2 = crypto.createHash('sha256').update(req.body.psw2).digest('base64');

@@ -1,0 +1,45 @@
+.banner {
+    position:relative; 
+    top:-50%;
+    margin-bottom:-60px; 
+    min-height:64px; 
+    padding-top:0px; 
+    padding-bottom:6px; 
+    overflow:hidden; 
+    border-radius:0px;
+    padding-top:8px; 
+    padding-bottom:8px; 
+    background-color:rgba(15, 10, 60, 0.7); 
+    color:#fff; 
+    border-radius:0px;
+    min-height:36px; width:320px;
+}
+
+.game {
+    border-radius: 3px; 
+    width:324px; 
+    min-height:170px; 
+    padding:2px; 
+    padding-bottom:8px; 
+    padding-top: 8px; 
+    margin-left:6px; 
+}
+
+.game_cover {
+    width:320px; 
+    height:320px;
+    background-repeat: no-repeat;
+    background-size: cover;
+}
+
+.game_title:link, .game_title:visited {
+  color: white;
+  padding: 15px 25px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+}
+
+.game_title:hover, .game_title:active {
+  color: rgba(150, 150, 200);
+}
