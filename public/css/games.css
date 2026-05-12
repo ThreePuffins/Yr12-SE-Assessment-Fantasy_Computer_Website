@@ -1,35 +1,53 @@
 .banner {
-    position:relative; 
-    top:-50%;
-    margin-bottom:-60px; 
-    min-height:64px; 
-    padding-top:0px; 
-    padding-bottom:6px; 
-    overflow:hidden; 
-    border-radius:0px;
-    padding-top:8px; 
-    padding-bottom:8px; 
-    background-color:rgba(15, 10, 60, 0.7); 
-    color:#fff; 
-    border-radius:0px;
-    min-height:36px; width:320px;
+  position:relative; 
+  top:-50%;
+  margin-bottom:-60px; 
+  min-height:64px; 
+  padding-top:0px; 
+  padding-bottom:6px; 
+  overflow:hidden; 
+  border-radius:0px;
+  padding-top:8px; 
+  padding-bottom:8px; 
+  background-color:rgba(15, 10, 60, 0.7); 
+  color:#fff; 
+  border-radius:0px;
+  min-height:36px; width:320px;
+}
+
+.main-div {
+  max-width:1060px;
+  min-height:50vh;
+  margin:auto;
+  display:block;
+  padding-top:16px; 
+  padding-bottom:16px;
+  overflow:hidden;
+}
+
+.games-div {
+  background-color:#0c2942;
+  display:flex; 
+  flex-direction:row; 
+  flex-wrap: wrap; 
+  padding:4px;
 }
 
 .game {
-    border-radius: 3px; 
-    width:324px; 
-    min-height:170px; 
-    padding:2px; 
-    padding-bottom:8px; 
-    padding-top: 8px; 
-    margin-left:6px; 
+  border-radius: 3px; 
+  width:324px; 
+  min-height:170px; 
+  padding:2px; 
+  padding-bottom:8px; 
+  padding-top: 8px; 
+  margin-left:6px; 
 }
 
 .game_cover {
-    width:320px; 
-    height:320px;
-    background-repeat: no-repeat;
-    background-size: cover;
+  width:320px; 
+  height:320px;
+  background-repeat: no-repeat;
+  background-size: cover;
 }
 
 .game_title:link, .game_title:visited {

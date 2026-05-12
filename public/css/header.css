@@ -1,5 +1,9 @@
 body, .website-nav, .account, ul { margin: 0; padding: 0; }
 
+body {
+  background-color:#10324d;
+}
+
 .container {
     padding-right: 15px;
     padding-left: 15px;
@@ -15,7 +19,7 @@ li {display: block;}
 li, & a {  
     position: relative;
     font-size: 24px;
-    color: #121415;
+    color: rgb(161, 173, 211);
     text-decoration: none;
     margin: 0;
     text-align: center;
@@ -23,12 +27,12 @@ li, & a {
 }
 
 li:hover, & a:hover {
-    color: #ffffff;
+    color: rgb(182, 192, 225);
 }
 
 .navbar {
     border-width: 0px;
-    background-color: #6a97b2;
+    background-color: #0c2942;
     position: relative;
     display: block;
     margin-bottom: 20px;

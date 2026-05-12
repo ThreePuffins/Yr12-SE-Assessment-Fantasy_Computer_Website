@@ -28,6 +28,10 @@ app.get('/', (req, res) => {
   res.render('index')
 });
 
+app.get('/about', (req, res) => {
+  res.render('index')
+});
+
 app.get('/u/:id', (req, res) => {
   const id = req.params.id
 
