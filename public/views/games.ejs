@@ -6,22 +6,51 @@
 <body>
     <%- include('header.ejs') %>
     <div class="main-div">
-        <div class="games-div">
-                <% if (games.length > 0) { %>
-                    <% games.forEach(function(game) { %>
-                    <div class="game" id="g<%= game.id %>">
-                        <a href="/g/<%= game.id %>">
-                            <div class="game_cover" style="background-image: url('/<%= game.cover_image %>')"></div>
-                        </a>
-                        <div class="banner"> 
-                            <a class="game_title" href="/g/<%= game.id %>"> <%= game.name %> </a>
-                        </div>
+        <div class="search-functions" style="display:inline-table; width:100%; margin-bottom:4px; margin-top:4;">
+            <% if (Number(page) <= 1) { %>
+                <div class="dead-button">
+                    &lt;
+                </div>
+            <% } else { %>
+                <a href="/games/?page=<%=Number(page) - 1%>">
+                    <div class="link-button">
+                        &lt;
                     </div>
-                    
-                    <% }); %>
-                <% } else { %>
-                    <p>No games :/</p>
-                <% } %>
+                </a>
+            <% } %>
+            <a href="/games/?page=<%=Number(page)%>">
+                <div class="link-button">
+                    Page <%=Number(page)%>
+                </div>
+            </a>
+            <% if (games.length == 0) { %>
+                <div class="dead-button">
+                    &gt;
+                </div>
+            <% } else { %>
+                <a href="/games/?page=<%=Number(page) + 1%>">
+                    <div class="link-button">
+                        &gt;
+                    </div>
+                </a>
+            <% } %>
+        </div>
+        <div class="games-div">
+            <% if (games.length > 0) { %>
+                <% games.forEach(function(game) { %>
+                <div class="game" id="g<%= game.id %>">
+                    <a href="/g/<%= game.id %>">
+                        <div class="game_cover" style="background-image: url('/<%= game.cover_image %>')"></div>
+                    </a>
+                    <div class="banner"> 
+                        <a class="game_title" href="/g/<%= game.id %>"> <%= game.name %> </a>
+                    </div>
+                </div>
+                
+                <% }); %>
+            <% } else { %>
+                <p>No games :/</p>
+            <% } %>
         </div>
     </div>
 </body>

@@ -20,13 +20,36 @@
   min-height:50vh;
   margin:auto;
   display:block;
-  padding-top:16px; 
-  padding-bottom:16px;
+  padding:16px;
   overflow:hidden;
+  background-color:#0c2942;
+}
+
+.link-button {
+  float: left;
+  background-color: #173e5e;
+  padding: 8px;
+  color: rgb(161, 173, 211);
+  font-size: 20px;
+  height: 30px;
+  vertical-align: center;
+  display: inline-table;
+  margin: 2px;
+}
+
+.dead-button {
+  float: left;
+  background-color: #11334f;
+  padding: 8px;
+  color: #11334f;
+  font-size: 20px;
+  height: 30px;
+  vertical-align: center;
+  display: inline-table;
+  margin: 2px;
 }
 
 .games-div {
-  background-color:#0c2942;
   display:flex; 
   flex-direction:row; 
   flex-wrap: wrap; 

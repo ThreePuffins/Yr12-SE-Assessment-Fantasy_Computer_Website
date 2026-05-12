@@ -76,11 +76,17 @@ app.get('/g/:id', (req, res) => {
 });
 
 app.get('/games', (req, res) => {
+  var games_per_page = 8;
+  var page = req.query["page"] ? req.query["page"] : 1;
+
   database.get_games((err, rows) => {
     if (err) { console.log(err); }
     else if (rows) {
+      const display_games = rows.filter((game) => game.id >= games_per_page * (page - 1) && game.id < games_per_page * (page))
+      
       const data = {
-        games: rows
+        games: display_games,
+        page: page
       }
       res.render('games', data);
     }

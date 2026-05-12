@@ -16,14 +16,16 @@ body {
 
 li {display: block;}
 
-li, & a {  
-    position: relative;
-    font-size: 24px;
-    color: rgb(161, 173, 211);
-    text-decoration: none;
-    margin: 0;
-    text-align: center;
-    padding: 5px 8px;
+li {  
+    & a {
+        position: relative;
+        font-size: 24px;
+        color: rgb(161, 173, 211);
+        text-decoration: none;
+        margin: 0;
+        text-align: center;
+        padding: 5px 8px;
+    }
 }
 
 li:hover, & a:hover {
@@ -43,11 +45,21 @@ li:hover, & a:hover {
 .account {
     & li {
         float: right;
+        position: relative;
+        font-size: 24px;
+        color: rgb(161, 173, 211);
+        text-decoration: none;
+        margin: 0;
+        text-align: center;
+        padding: 5px 8px;
     }
 }
+
+.account:hover {cursor: pointer;}
 
 .website-nav {
     & li {
         float: left;
+        padding: 5px 8px;
     }
 }

@@ -13,15 +13,7 @@ db.serialize(() => {
     for (let i = 0; i < 10; i++) {
         fill_gay.run([i, `Ipsum${i}`, `image.jpeg`]);
     }
-
-    // const fill_user = db.prepare('INSERT INTO users (id, username, password) VALUES (?, ?, ?)');
     
-    // for (let i = 0; i < 17; i++) {
-    //     fill_user.run([i, `Ceridwen${i}`, "mq02v82bkxh2b73v"]);
-    // }
-
-    // fill_user.finalize();
-
     fill_gay.finalize();
 })
 
