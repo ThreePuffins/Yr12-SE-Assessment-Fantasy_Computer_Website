@@ -9,8 +9,8 @@
   border-radius:0px;
   padding-top:8px; 
   padding-bottom:8px; 
-  background-color:rgba(15, 10, 60, 0.7); 
-  color:#fff; 
+  background-color:rgba(11, 24, 59, 0.7); 
+  color:rgb(161, 173, 211); 
   border-radius:0px;
   min-height:36px; width:320px;
 }
@@ -74,7 +74,7 @@
 }
 
 .game_title:link, .game_title:visited {
-  color: white;
+  color: rgb(161, 173, 211);
   padding: 15px 25px;
   text-align: center;
   text-decoration: none;
@@ -82,5 +82,5 @@
 }
 
 .game_title:hover, .game_title:active {
-  color: rgba(150, 150, 200);
+  color: rgb(182, 192, 225);
 }
