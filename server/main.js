@@ -79,14 +79,15 @@ app.get('/games', (req, res) => {
   var games_per_page = 8;
   var page = req.query["page"] ? req.query["page"] : 1;
 
-  database.get_games((err, rows) => {
+  database.get_games(async (err, rows) => {
     if (err) { console.log(err); }
     else if (rows) {
       const display_games = rows.filter((game) => game.id >= games_per_page * (page - 1) && game.id < games_per_page * (page))
-      
+      const cookie_id = req.cookies.user_id;
       const data = {
         games: display_games,
-        page: page
+        page: page,
+        session: cookie_id,
       }
       res.render('games', data);
     }

@@ -4,12 +4,33 @@ body {
   background-color:#10324d;
 }
 
+.account-overlay {
+    overflow:hidden; 
+    background-color:#0a2339; 
+    border-radius: 5px;
+    border-width: 3px;
+    border-style: solid;
+    border-color: #051320;
+
+    display: none;
+    
+    padding: 0.5%;
+    position: absolute;
+    right: 5%;
+    top: 100%;
+    z-index: 1;
+}
+
+.account-action-list {
+    flex-direction: column;
+    display: flex;
+}
+
 .container {
     padding-right: 15px;
     padding-left: 15px;
     margin-right: auto;
     margin-left: auto;
-    display: block;
     height: 50px;
     align-content: center;
 }
@@ -28,21 +49,16 @@ li {
     }
 }
 
-li:hover, & a:hover {
-    color: rgb(182, 192, 225);
-}
-
 .navbar {
     border-width: 0px;
     background-color: #0c2942;
     position: relative;
-    display: block;
     margin-bottom: 20px;
     padding: 0;
 }
 
 
-.account {
+.account, .account-settings {
     & li {
         float: right;
         position: relative;
@@ -55,7 +71,7 @@ li:hover, & a:hover {
     }
 }
 
-.account:hover {cursor: pointer;}
+li:hover, a:hover {cursor: pointer; color: rgb(182, 192, 225)}
 
 .website-nav {
     & li {
@@ -63,3 +79,4 @@ li:hover, & a:hover {
         padding: 5px 8px;
     }
 }
+

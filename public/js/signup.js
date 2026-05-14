@@ -1,6 +1,6 @@
 var modal = document.getElementById('signup');
 
-window.addEventListener('click', (event) => {
+window.addEventListener('mousedown', (event) => {
     if (event.target == modal) {
         modal.style.display = "none";
     }
@@ -21,11 +21,11 @@ signupform.addEventListener('submit', function(event) {
       }
 
       // Validate password length
-      if (password.length < 8) {
-          alert('Password must be at least 8 characters long.');
-          event.preventDefault();
-          return;
-      }
+    //   if (password.length < 8) {
+    //       alert('Password must be at least 8 characters long.');
+    //       event.preventDefault();
+    //       return;
+    //   }
 
       // Validate passwords match
       if (password !== confirmPassword) {

@@ -10,12 +10,25 @@
             <li><a href="/about">About</a></li>
             <li><a href="/games">Games</a></li>
         </ul>
+        <% if (!session) { %>
         <ul class="account">
             <li onclick="document.getElementById('signup').style.display='block';">Signup</li>
             <li onclick="document.getElementById('login').style.display='block';">Login</li>
         </ul>
+        <% } else { %>
+        <div class="account-settings">
+            <li onclick="document.getElementById('acc-o').style.display='block';"><%= session %></li>
+            <div class="account-overlay" id="acc-o">
+                <ul class="account-action-list">
+                    <li><a href="/settings">Settings</a></li>
+                    <li><a href="/auth/log-out">Log Out</a></li>
+                </ul>
+            </div>
+        </div>
+        <% } %>
     </div>
 </nav>
+<script src="/js/header.js" type="module"></script>
 
 <%- include('signup.html') %>
 <%- include('login.html') %>

@@ -4,7 +4,7 @@ const db = new sqlite.Database(":memory:")
 db.serialize(() => {
     const init_gay = 'CREATE TABLE IF NOT EXISTS games (id INTEGER PRIMARY KEY, name TEXT, cover_image TEXT)';
     db.run(init_gay);
-    const init_ceridwen = 'CREATE TABLE IF NOT EXISTS users (id INTEGER PRIMARY KEY, username string, email string, password string)';
+    const init_ceridwen = 'CREATE TABLE IF NOT EXISTS users (id INTEGER PRIMARY KEY, username TEXT, email TEXT, password TEXT)';
     db.run(init_ceridwen);
 
 

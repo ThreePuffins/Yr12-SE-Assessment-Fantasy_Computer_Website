@@ -59,6 +59,7 @@ button:hover {
   overflow: auto; /* Enable scroll if needed */
   background-color: rgba(71, 78, 93, 0.7);
   padding-top: 50px;
+  overflow: hidden;
 }
 
 /* Modal Content/Box */
