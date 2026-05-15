@@ -3,9 +3,10 @@ const cors = require("cors");
 const path = require("path");
 const ejs = require('ejs');
 const crypto = require('crypto');
-const cookieParser = require('cookie-parser');
+const jwt = require('jsonwebtoken');
 
 const database = require("./database.js");
+require('dotenv').config()
 
 const app = express();
 const PORT = 8080;
@@ -16,10 +17,14 @@ app.use(
     })
 )
 app.use(express.static('public'));
-// TODO: make this safer
-const COOKIE_SECRET = "YGU&(01y83r8yhas9G(uf01hOISHfu913h";
-app.use(cookieParser(COOKIE_SECRET));
 app.use(express.urlencoded({ extended: true }));
+
+
+
+function authenticate(req, res, next) {
+  req.user = "t";
+  next();
+}
 
 app.set('view engine', 'ejs');
 app.set('views', './public/views');
@@ -61,7 +66,7 @@ app.get('/u/:id', (req, res) => {
 
 app.get('/g/:id', (req, res) => {
   
-  const id = req.params.id
+  const id = req.params.id;
 
   database.get_game(id, (err, rows) => {
     if (err) { console.log(err); }
@@ -75,7 +80,7 @@ app.get('/g/:id', (req, res) => {
   })
 });
 
-app.get('/games', (req, res) => {
+app.get('/games', authenticate, (req, res) => {
   var games_per_page = 8;
   var page = req.query["page"] ? req.query["page"] : 1;
 
@@ -87,7 +92,7 @@ app.get('/games', (req, res) => {
       const data = {
         games: display_games,
         page: page,
-        session: cookie_id,
+        session: req.user
       }
       res.render('games', data);
     }
