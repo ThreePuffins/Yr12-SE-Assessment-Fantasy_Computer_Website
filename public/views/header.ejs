@@ -17,11 +17,11 @@
         </ul>
         <% } else { %>
         <div class="account-settings">
-            <li onclick="document.getElementById('acc-o').style.display='block';"><%= session %></li>
+            <li onclick="document.getElementById('acc-o').style.display='block';"><%= session.username %></li>
             <div class="account-overlay" id="acc-o">
                 <ul class="account-action-list">
                     <li><a href="/settings">Settings</a></li>
-                    <li><a href="/auth/log-out">Log Out</a></li>
+                    <li><a href="/auth/log_out">Log Out</a></li>
                 </ul>
             </div>
         </div>

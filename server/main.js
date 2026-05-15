@@ -3,13 +3,14 @@ const cors = require("cors");
 const path = require("path");
 const ejs = require('ejs');
 const crypto = require('crypto');
+const cookieParser = require('cookie-parser');
 const jwt = require('jsonwebtoken');
-
+require('dotenv').config();
 const database = require("./database.js");
-require('dotenv').config()
 
 const app = express();
 const PORT = 8080;
+const jwt_secret = process.env.JWT_SECRET;
 
 app.use(
     cors({
@@ -17,54 +18,68 @@ app.use(
     })
 )
 app.use(express.static('public'));
+app.use(cookieParser(process.env.COOKIE_SECRET));
 app.use(express.urlencoded({ extended: true }));
 
+function checkUser(req, res, next) {
+  const token = req.cookies.jwt_refresh;
 
+  if (!token) {
+    next();
+    return;
+  }
 
-function authenticate(req, res, next) {
-  req.user = "t";
-  next();
+  jwt.verify(token, process.env.JWT_SECRET, (err, decoded) => {
+    if (err) {
+      next();
+      return;
+    }
+
+    req.user = decoded;
+    next();
+  });
 }
 
 app.set('view engine', 'ejs');
 app.set('views', './public/views');
 
-app.get('/', (req, res) => {
-  res.render('index')
+app.get('/', checkUser, (req, res) => {
+  res.render('index', {session: req.user})
 });
 
-app.get('/about', (req, res) => {
-  res.render('index')
+app.get('/about', checkUser, (req, res) => {
+  res.render('index', {session: req.user})
 });
 
-app.get('/u/:id', (req, res) => {
+app.get('/u/:id', checkUser, (req, res) => {
   const id = req.params.id
 
   database.get_user_by_id(id, (err, rows) => {
     if (err) { console.log(err); }
     else if (rows) {
-      const cookie_id = req.cookies.user_id;
-
-      if (id == cookie_id) {
-        const data = {
-          username: rows.username,
-          password: rows.password,
-          email: rows.email
+      if (req.user) {
+        if (id == req.user.id) {
+          const data = {
+            username: rows.username,
+            password: rows.password,
+            email: rows.email,
+            session: req.user
+          }
+          res.render('user', data);
+          return;
         }
-        if (data.username) res.render('user', data);
       }
-      else {
-        const data = {
-          username: rows.username
-        }
-        res.render('view_user', data)
+      const data = {
+        username: rows.username,
+        session: req.user
       }
+      res.render('view_user', data)
     }
-    else res.render('fuck');
+    else res.render('404', {session: req.user});
   })
 });
 
-app.get('/g/:id', (req, res) => {
+app.get('/g/:id', checkUser, (req, res) => {
   
   const id = req.params.id;
 
@@ -72,15 +87,16 @@ app.get('/g/:id', (req, res) => {
     if (err) { console.log(err); }
     else if (rows) {
       const data = {
-        name: rows.name
+        name: rows.name,
+        session: req.user
       }
       if (data.name) res.render('game_page', data);
     }
-    else res.render('fuck');
+    else res.render('404', {session: req.user});
   })
 });
 
-app.get('/games', authenticate, (req, res) => {
+app.get('/games', checkUser, (req, res) => {
   var games_per_page = 8;
   var page = req.query["page"] ? req.query["page"] : 1;
 
@@ -88,7 +104,6 @@ app.get('/games', authenticate, (req, res) => {
     if (err) { console.log(err); }
     else if (rows) {
       const display_games = rows.filter((game) => game.id >= games_per_page * (page - 1) && game.id < games_per_page * (page))
-      const cookie_id = req.cookies.user_id;
       const data = {
         games: display_games,
         page: page,
@@ -96,11 +111,11 @@ app.get('/games', authenticate, (req, res) => {
       }
       res.render('games', data);
     }
-    else res.render('fuck');
+    else res.render('404', {session: req.user});
   })
 });
 
-app.post("/sign_up_process", (req, res) => {
+app.post("/auth/sign_up_process", (req, res) => {
   hashed = crypto.createHash('sha256').update(req.body.psw).digest('base64');
   hashed2 = crypto.createHash('sha256').update(req.body.psw2).digest('base64');
   database.create_user(req.body.username, req.body.email, hashed);
@@ -108,13 +123,20 @@ app.post("/sign_up_process", (req, res) => {
   res.redirect("/");
 });
 
-app.post("/log_in_process", (req, res) => {
+app.post("/auth/log_in_process", (req, res) => {
   database.get_user_by_username(req.body.username, (err, rows) => {
     if (err) { console.log(err); }
     else if (rows) {
       hashed = crypto.createHash('sha256').update(req.body.psw).digest('base64');
       if (hashed = rows.password) {
-        res.cookie('user_id', rows.id, {
+        const payload = {
+          username: rows.username,
+          id: rows.id
+        };
+        const token = jwt.sign(payload, jwt_secret, {
+          expiresIn: '7DAYS'
+        });
+        res.cookie('jwt_refresh', token, {
           maxAge: 60 * 60 * 1000, 
           httpOnly: true,
           secure: true,
@@ -123,15 +145,20 @@ app.post("/log_in_process", (req, res) => {
         res.redirect(`/u/${rows.id}`);
       }
     }
-    else res.render('fuck');
+    else res.render('404', {session: req.user});
   })
 });
 
-app.use(function(req, res) {
+app.get("/auth/log_out", checkUser, (req, res) => {
+  res.clearCookie("jwt_refresh");
+  res.redirect("/");
+});
+
+app.use(checkUser, function(req, res) {
   res.status(404);
 
   if (req.accepts('html')) {
-    res.render('404');
+    res.render('404', {session: req.user});
     return;
   }
 
