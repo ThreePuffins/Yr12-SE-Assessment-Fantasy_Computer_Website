@@ -80,3 +80,6 @@ li:hover, a:hover {cursor: pointer; color: rgb(182, 192, 225)}
     }
 }
 
+body {
+  color: rgb(161, 173, 211);
+}

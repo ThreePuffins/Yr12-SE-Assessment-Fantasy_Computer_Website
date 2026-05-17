@@ -48,6 +48,7 @@ function get_user_by_id(id, cb) {
         }
         cb(null, rows[0]);
     })
+    return;
 }
 
 function get_user_by_username(username, cb) {
@@ -65,4 +66,14 @@ function create_user(username, email, password) {
     const stmt = db.prepare("INSERT INTO users (username, email, password) VALUES (?, ?, ?)");
     stmt.all([username, email, password])
 }
-module.exports = { get_game, get_user_by_id, create_user, get_user_by_username, get_games};
+
+function delete_user(id) {
+    const stmt = db.prepare("DELETE from users WHERE id = (?)");
+    stmt.all(id)
+}
+
+function edit_user(id, username, email, password) {
+    const stmt = db.prepare("UPDATE users SET username=(?), email=(?), password=(?) WHERE id = (?)");
+    stmt.all([username, email, password, id]);
+}
+module.exports = { get_game, get_user_by_id, create_user, get_user_by_username, get_games, delete_user, edit_user};

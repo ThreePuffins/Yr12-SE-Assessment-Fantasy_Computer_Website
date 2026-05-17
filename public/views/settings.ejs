@@ -1,13 +1,51 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title><%= username %></title>
+  <title>Settings</title>
+  <link href="/css/games.css" rel="stylesheet" type="text/css">
 </head>
 <body>
   <%- include('header.ejs') %>
-  <h1><%= username %></h1>
-  <p>Yeah thats a user</p>
-  <p>Yo did you know your password is <%= password %></p>
-  <p>Yo did you know your email is <%= email %></p>
+  <div class="main-div">
+    <h1> Account Settings </h1>
+    <form id="settings-form" method="POST" action="/auth/change_settings">
+
+      <hr>
+
+      <label for="username_change"><b>Change Username</b></label>
+      <input id="username_change" type="text" name="username_change">
+
+      <hr>
+
+      <label for="password_change"><b>Change Password</b></label>
+      <input id="password_change" type="text" name="password_change">
+
+      <hr>
+
+      <label for="email_change"><b>Change Email</b></label>
+      <input id="email_change" type="text" name="email_change">
+
+      <hr>
+
+      <button type="submit" class="btn updatebtn">Update Settings</button>
+
+      <hr>
+
+      <button class="btn btn-danger" type="button" 
+        onclick="document.getElementById('del-acc-overlay').style.display='block';">Delete Account</button>
+    </form>
+  </div>
 </body>
 </html>
+
+<div class="modal" id="del-acc-overlay">
+  <form id="delete-account-form" class="modal-content" method="POST" action="/auth/delete_account">
+    <div class="form-container">
+      <h1>Are you sure?</h1>
+      <hr>
+      <button type="button" onclick="document.getElementById('del-acc-overlay').style.display='none'" class="cancelbtn">Cancel</button>
+      <button type="submit" class="btn btn-danger">Delete Account</button>
+    </div>
+  </form>
+  <script src="/js/settings.js" type="module"></script>
+</div>

@@ -20,35 +20,35 @@ app.use(
 app.use(express.static('public'));
 app.use(cookieParser(process.env.COOKIE_SECRET));
 app.use(express.urlencoded({ extended: true }));
+app.use(express.json());
 
-function checkUser(req, res, next) {
+async function checkUser(req, res, next) {
   const token = req.cookies.jwt_refresh;
-
   if (!token) {
     next();
     return;
   }
-
-  jwt.verify(token, process.env.JWT_SECRET, (err, decoded) => {
+  jwt.verify(token, process.env.JWT_SECRET, async (err, decoded) => {
     if (err) {
       next();
       return;
     }
-
-    req.user = decoded;
-    next();
+    database.get_user_by_id(decoded.id, (err, rows) => {
+      req.session = {user: decoded, username: rows.username};
+      next();
+    });
   });
-}
+};
 
 app.set('view engine', 'ejs');
 app.set('views', './public/views');
 
 app.get('/', checkUser, (req, res) => {
-  res.render('index', {session: req.user})
+  res.render('index', {session: req.session})
 });
 
 app.get('/about', checkUser, (req, res) => {
-  res.render('index', {session: req.user})
+  res.render('index', {session: req.session})
 });
 
 app.get('/u/:id', checkUser, (req, res) => {
@@ -57,13 +57,13 @@ app.get('/u/:id', checkUser, (req, res) => {
   database.get_user_by_id(id, (err, rows) => {
     if (err) { console.log(err); }
     else if (rows) {
-      if (req.user) {
-        if (id == req.user.id) {
+      if (req.session) {
+        if (id == req.session.user.id) {
           const data = {
             username: rows.username,
             password: rows.password,
             email: rows.email,
-            session: req.user
+            session: req.session
           }
           res.render('user', data);
           return;
@@ -71,11 +71,11 @@ app.get('/u/:id', checkUser, (req, res) => {
       }
       const data = {
         username: rows.username,
-        session: req.user
+        session: req.session
       }
       res.render('view_user', data)
     }
-    else res.render('404', {session: req.user});
+    else res.render('404', {session: req.session});
   })
 });
 
@@ -88,11 +88,11 @@ app.get('/g/:id', checkUser, (req, res) => {
     else if (rows) {
       const data = {
         name: rows.name,
-        session: req.user
+        session: req.session
       }
       if (data.name) res.render('game_page', data);
     }
-    else res.render('404', {session: req.user});
+    else res.render('404', {session: req.session});
   })
 });
 
@@ -107,30 +107,59 @@ app.get('/games', checkUser, (req, res) => {
       const data = {
         games: display_games,
         page: page,
-        session: req.user
+        session: req.session
       }
       res.render('games', data);
     }
-    else res.render('404', {session: req.user});
+    else res.render('404', {session: req.session});
   })
+});
+
+app.get('/settings', checkUser, (req, res) => {
+  if (req.session) {
+    res.render('settings', {session: req.session});
+  }
+  else {
+    res.redirect("/");
+  }
+});
+
+app.post("/auth/delete_account", checkUser, (req, res) => {
+  if (req.session) {
+    database.delete_user(req.session.id);
+  }
+  res.redirect("/auth/log_out");
 });
 
 app.post("/auth/sign_up_process", (req, res) => {
   hashed = crypto.createHash('sha256').update(req.body.psw).digest('base64');
-  hashed2 = crypto.createHash('sha256').update(req.body.psw2).digest('base64');
   database.create_user(req.body.username, req.body.email, hashed);
-
   res.redirect("/");
+});
+
+app.post("/auth/change_settings", checkUser, (req, res) => {
+
+  database.get_user_by_id(req.session.user.id, (err, rows) => {
+    if (err) { console.log(err); }
+    else if (rows) {
+      username = req.body.username_change ? req.body.username_change : rows.username;
+      email = req.body.email_change ? req.body.email_change : rows.email;
+      password = req.body.password_change ? req.body.password_change : rows.password;
+
+      database.edit_user(req.session.user.id, username, email, password);
+    }
+  });
+
+  res.redirect("/settings");
 });
 
 app.post("/auth/log_in_process", (req, res) => {
   database.get_user_by_username(req.body.username, (err, rows) => {
     if (err) { console.log(err); }
     else if (rows) {
-      hashed = crypto.createHash('sha256').update(req.body.psw).digest('base64');
-      if (hashed = rows.password) {
+      hashed = crypto.createHash('sha256').update(req.body.password).digest('base64');
+      if (hashed === rows.password) {
         const payload = {
-          username: rows.username,
           id: rows.id
         };
         const token = jwt.sign(payload, jwt_secret, {
@@ -142,11 +171,12 @@ app.post("/auth/log_in_process", (req, res) => {
           secure: true,
           sameSite: 'strict'
         });
-        res.redirect(`/u/${rows.id}`);
+        res.json({ fail: false, url: `/u/${rows.id}`});
       }
+      else res.json({ fail: true, message: "Incorrect credentials" });
     }
-    else res.render('404', {session: req.user});
-  })
+    else res.json({ fail: true, message: "User not found" });
+  });
 });
 
 app.get("/auth/log_out", checkUser, (req, res) => {
@@ -158,7 +188,7 @@ app.use(checkUser, function(req, res) {
   res.status(404);
 
   if (req.accepts('html')) {
-    res.render('404', {session: req.user});
+    res.render('404', {session: req.session});
     return;
   }
 
