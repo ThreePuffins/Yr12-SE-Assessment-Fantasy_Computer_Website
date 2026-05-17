@@ -8,31 +8,30 @@
   <%- include('header.ejs') %>
   <div class="main-div">
     <h1> Account Settings </h1>
-    <form id="settings-form" method="POST" action="/auth/change_settings">
-
+    <form id="account-settings-form" method="POST" action="/auth/change_account_settings">
       <hr>
-
       <label for="username_change"><b>Change Username</b></label>
       <input id="username_change" type="text" name="username_change">
-
       <hr>
-
-      <label for="password_change"><b>Change Password</b></label>
-      <input id="password_change" type="text" name="password_change">
-
-      <hr>
-
       <label for="email_change"><b>Change Email</b></label>
       <input id="email_change" type="text" name="email_change">
-
       <hr>
-
       <button type="submit" class="btn updatebtn">Update Settings</button>
-
       <hr>
-
       <button class="btn btn-danger" type="button" 
         onclick="document.getElementById('del-acc-overlay').style.display='block';">Delete Account</button>
+      <hr>
+    </form>
+    <h1> Password Settings </h1>
+    <form id="psw-form" method="POST" action="/auth/change_password">
+      <hr>
+      <label for="old_password"><b>Old Password</b></label>
+      <input id="old_password" type="text" name="old_password">
+      <label for="new_password"><b>New Password</b></label>
+      <input id="new_password" type="text" name="new_password">
+      <label for="confirm_password"><b>Confirm New Password</b></label>
+      <input id="confirm_password" type="text" name="confirm_password">
+      <button type="submit" class="btn updatebtn">Change Password</button>
     </form>
   </div>
 </body>

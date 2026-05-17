@@ -132,25 +132,60 @@ app.post("/auth/delete_account", checkUser, (req, res) => {
 });
 
 app.post("/auth/sign_up_process", (req, res) => {
-  hashed = crypto.createHash('sha256').update(req.body.psw).digest('base64');
-  database.create_user(req.body.username, req.body.email, hashed);
-  res.redirect("/");
+  database.get_user_by_username(req.body.username, (err, user) => {
+    if (err) { console.log(err); }
+    else if (user) {
+      res.json({ fail: true, message: `Username taken`});
+      return;
+    }
+    hashed = crypto.createHash('sha256').update(req.body.password).digest('base64');
+    database.create_user(req.body.username, req.body.email, hashed);
+    res.json({ fail: false, url: `/`});
+  });
 });
 
-app.post("/auth/change_settings", checkUser, (req, res) => {
-
+app.post("/auth/change_account_settings", checkUser, (req, res) => {
   database.get_user_by_id(req.session.user.id, (err, rows) => {
     if (err) { console.log(err); }
     else if (rows) {
-      username = req.body.username_change ? req.body.username_change : rows.username;
-      email = req.body.email_change ? req.body.email_change : rows.email;
-      password = req.body.password_change ? req.body.password_change : rows.password;
-
-      database.edit_user(req.session.user.id, username, email, password);
+      database.get_user_by_username(req.body.username, (err, user) =>{
+        if (err) { console.log(err); }
+        else if (user) {
+          res.json({ fail: true, message: `Username taken`});
+          return;
+        }
+        username = req.body.username ? req.body.username : rows.username;
+        email = req.body.email ? req.body.email : rows.email;
+        
+        database.edit_user(req.session.user.id, username, email, rows.password);
+        res.json({ fail: false, url: `/settings`});
+      })
     }
   });
+});
 
-  res.redirect("/settings");
+app.post("/auth/change_password", checkUser, (req, res) => {
+  database.get_user_by_id(req.session.user.id, (err, rows) => {
+    if (err) { console.log(err); }
+    else if (rows) {
+      old_psw = crypto.createHash('sha256').update(req.body.old_psw).digest('base64');
+      new_psw = crypto.createHash('sha256').update(req.body.new_psw).digest('base64');
+      conf_psw = crypto.createHash('sha256').update(req.body.conf_psw).digest('base64');
+
+      if (old_psw !== rows.password) {
+        res.json({ fail: true, message: "Old password is incorrect" });
+        return;
+      }
+
+      if (new_psw !== conf_psw) {
+        res.json({ fail: true, message: "New passwords don't match" })
+        return;
+      }
+
+      database.edit_user(req.session.user.id, rows.username, rows.email, new_psw);
+      res.json({ fail: false, url: `/settings`});
+    }
+  });
 });
 
 app.post("/auth/log_in_process", (req, res) => {

@@ -9,28 +9,31 @@ window.addEventListener('mousedown', (event) => {
 var signupform = document.getElementById('signup-form')
 
 signupform.addEventListener('submit', function(event) {
-      const username = signupform.getElementById('username').value;
-      const password = signupform.getElementById('psw').value;
-      const confirmPassword = signupform.getElementById('psw2').value;
+    event.preventDefault();
+    const username = document.getElementById('username').value;
+    const password = document.getElementById('psw').value;
+    const email = document.getElementById('email').value;
+    const confirmPassword = document.getElementById('psw2').value;
 
-      // Validate fields are not empty
-      if (!username || !password || !confirmPassword) {
-          alert('All fields are required.');
-          event.preventDefault();
-          return;
-      }
+    if (!username || !password || !confirmPassword) {
+        alert('All fields are required.');
+        return;
+    }
 
-      // Validate password length
-    //   if (password.length < 8) {
-    //       alert('Password must be at least 8 characters long.');
-    //       event.preventDefault();
-    //       return;
-    //   }
+    if (password !== confirmPassword) {
+        alert('Passwords do not match.');
+        return;
+    }
 
-      // Validate passwords match
-      if (password !== confirmPassword) {
-          alert('Passwords do not match.');
-          event.preventDefault();
-          return;
-      }
+    fetch('/auth/sign_up_process', { method: 'POST', headers: { 'Content-Type': 'application/json'},
+        body: JSON.stringify({username: username, password: password, email: email}) })
+        .then(response => response.json())
+        .then(data => {
+            if (data.fail) {
+                alert(data.message);
+            } 
+            else {
+                window.location.href = data.url;
+            }
+        });
 });
