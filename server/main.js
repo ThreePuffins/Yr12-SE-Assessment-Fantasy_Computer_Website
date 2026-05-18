@@ -5,6 +5,7 @@ const ejs = require('ejs');
 const crypto = require('crypto');
 const cookieParser = require('cookie-parser');
 const jwt = require('jsonwebtoken');
+const fs = require('fs');
 require('dotenv').config();
 const database = require("./database.js");
 
@@ -219,6 +220,51 @@ app.post("/auth/log_in_process", (req, res) => {
 app.get("/auth/log_out", checkUser, (req, res) => {
   res.clearCookie("jwt_refresh");
   res.redirect("/");
+});
+
+app.get("/upg", checkUser, (req, res) => {
+  res.render("upload_game", {session: req.session});
+});
+
+app.use("/api/upload_game", (req, res, next) => {
+  let data = [];
+  req.on('data', chunk => {
+    data.push(chunk);
+  });
+  req.on('end', () => {
+    if (req.headers['content-length'] > 10485760) {
+      res.status(413).send('File size exceeds limit');
+      return;
+    }
+    req.rawBody = Buffer.concat(data);
+    next();
+  });
+})
+
+app.post("/api/upload_game", (req, res) => {
+  const fileData = req.rawBody;
+  const originalFileName = req.headers['x-file-name'];
+  const fileName = path.basename(originalFileName); // Avoid path traversal
+  const fileExtension = path.extname(fileName).toLowerCase();
+
+  // Only allow certain file extensions
+  // if (!['.png', '.jpg', '.jpeg', '.txt'].includes(fileExtension)) {
+  //   res.status(400).send('Invalid file type');
+  //   return;
+  // }
+
+  const savePath = path.join(__dirname, 'games', fileName);
+
+  try {
+    if (!fs.existsSync(path.join(__dirname, 'games'))) {
+      fs.mkdirSync(path.join(__dirname, 'games'), { recursive: true });
+    }
+
+    fs.writeFileSync(savePath, fileData);
+    res.send({ message: "File uploaded successfully" });
+  } catch (error) {
+    res.status(500).send({ message: "Failed to upload file", error: error.message });
+  }
 });
 
 app.use(checkUser, function(req, res) {
