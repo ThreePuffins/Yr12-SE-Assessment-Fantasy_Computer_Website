@@ -63,7 +63,8 @@ app.get('/u/:id', checkUser, (req, res) => {
             username: rows.username,
             password: rows.password,
             email: rows.email,
-            session: req.session
+            session: req.session, 
+            games: null
           }
           res.render('user', data);
           return;
@@ -71,7 +72,8 @@ app.get('/u/:id', checkUser, (req, res) => {
       }
       const data = {
         username: rows.username,
-        session: req.session
+        session: req.session, 
+        games: null
       }
       res.render('view_user', data)
     }

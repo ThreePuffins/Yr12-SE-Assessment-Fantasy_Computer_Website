@@ -2,12 +2,18 @@
 <html>
 <head>
   <title><%= username %></title>
+  <link href="/css/games.css" rel="stylesheet" type="text/css">
 </head>
 <body>
   <%- include('header.ejs') %>
-  <h1><%= username %></h1>
-  <p>Yeah thats a user</p>
-  <p>Yo did you know your password is <%= password %></p>
-  <p>Yo did you know your email is <%= email %></p>
+  <div class="main-div">
+    <h1><%= username %> (This is your profile)</h1>
+    <hr>
+    <% if (games) { %>
+
+    <% } else { %>
+      <p>You haven't released any games. Consider going to <a>link</a> to release a game.</p>
+    <% } %>
+  </div>
 </body>
 </html>

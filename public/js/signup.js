@@ -25,6 +25,11 @@ signupform.addEventListener('submit', function(event) {
         return;
     }
 
+    if (username.length > 10) {
+        alert('Username is over 10 characters');
+        return;
+    }
+
     fetch('/auth/sign_up_process', { method: 'POST', headers: { 'Content-Type': 'application/json'},
         body: JSON.stringify({username: username, password: password, email: email}) })
         .then(response => response.json())

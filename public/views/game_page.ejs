@@ -1,14 +1,16 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <link href="/css/game_page.css" rel="stylesheet" type="text/css">
+  <link href="/css/games.css" rel="stylesheet" type="text/css">
   <title><%= name %></title>
 </head>
 <body>
   <%- include('header.ejs') %>
+  <div class="main-div">
   <h1><%= name %></h1>
-  <!-- style="image-rendering: pixelated; display: block; cursor: default;" -->
-  <canvas id="canvas" oncontextmenu="event.preventDefault()" onmousedown="window.focus()"></canvas>
-  <script src="/js/game_page.js" type="module"></script>
+    <!-- style="image-rendering: pixelated; display: block; cursor: default;" -->
+    <canvas id="canvas" oncontextmenu="event.preventDefault()" onmousedown="window.focus()"></canvas>
+    <script src="/js/game_page.js" type="module"></script>
+  </div>
 </body>
 </html>
