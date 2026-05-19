@@ -6,9 +6,9 @@
 </head>
 <body>
   <%- include('header.ejs') %>
+  <script src="https://github.com/fengari-lua/fengari-web/releases/download/v0.1.4/fengari-web.js" type="text/javascript"></script>
   <div class="main-div">
   <h1><%= name %></h1>
-    <!-- style="image-rendering: pixelated; display: block; cursor: default;" -->
     <canvas id="canvas" oncontextmenu="event.preventDefault()" onmousedown="window.focus()"></canvas>
     <script src="/js/game_page.js" type="module"></script>
   </div>

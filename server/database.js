@@ -2,16 +2,16 @@ const sqlite = require('sqlite3')
 const db = new sqlite.Database(":memory:")
 
 db.serialize(() => {
-    const init_gay = 'CREATE TABLE IF NOT EXISTS games (id INTEGER PRIMARY KEY, name TEXT, cover_image TEXT)';
+    const init_gay = 'CREATE TABLE IF NOT EXISTS games (id INTEGER PRIMARY KEY, name TEXT, cover_image TEXT, game_file TEXT)';
     db.run(init_gay);
     const init_ceridwen = 'CREATE TABLE IF NOT EXISTS users (id INTEGER PRIMARY KEY, username TEXT, email TEXT, password TEXT)';
     db.run(init_ceridwen);
 
 
-    const fill_gay = db.prepare('INSERT INTO games (id, name, cover_image) VALUES (?, ?, ?)');
+    const fill_gay = db.prepare('INSERT INTO games (id, name, cover_image, game_file) VALUES (?, ?, ?, ?)');
     
     for (let i = 0; i < 10; i++) {
-        fill_gay.run([i, `Ipsum${i}`, `image.jpeg`]);
+        fill_gay.run([i, `Ipsum${i}`, `games/covers/image.jpeg`, `games/code/i.txt`]);
     }
     
     fill_gay.finalize();

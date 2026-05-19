@@ -14,9 +14,9 @@ const PORT = 8080;
 const jwt_secret = process.env.JWT_SECRET;
 
 app.use(
-    cors({
-        origin: ["http://localhost:8080"],
-    })
+  cors({
+    origin: ["http://localhost:8080"],
+  })
 )
 app.use(express.static('public'));
 app.use(cookieParser(process.env.COOKIE_SECRET));
@@ -253,14 +253,15 @@ app.post("/api/upload_game", (req, res) => {
   //   return;
   // }
 
-  const savePath = path.join(__dirname, 'games', fileName);
+  const savePath = path.join(__dirname, '../public/games/code', fileName);
 
   try {
-    if (!fs.existsSync(path.join(__dirname, 'games'))) {
-      fs.mkdirSync(path.join(__dirname, 'games'), { recursive: true });
+    if (!fs.existsSync(path.join(__dirname, '../public/games/code'))) {
+      fs.mkdirSync(path.join(__dirname, '../public/games/code'), { recursive: true });
     }
 
     fs.writeFileSync(savePath, fileData);
+
     res.send({ message: "File uploaded successfully" });
   } catch (error) {
     res.status(500).send({ message: "Failed to upload file", error: error.message });
