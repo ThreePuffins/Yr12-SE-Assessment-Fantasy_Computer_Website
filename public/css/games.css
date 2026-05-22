@@ -20,7 +20,7 @@
   min-height:50vh;
   margin:auto;
   display:block;
-  padding:16px;
+  padding: 1em;
   overflow:hidden;
   background-color:#0c2942;
 }
@@ -133,6 +133,7 @@ canvas {
   -ms-interpolation-mode: nearest-neighbor;
 	border: 0px;
 	cursor: default;
+  min-width: 128px;
 }
 
 a {

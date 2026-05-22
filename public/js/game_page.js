@@ -1,10 +1,10 @@
 var ctx = document.getElementById('canvas').getContext('2d');
 
 window.addEventListener('resize', function() {
-  resizeWindow(window.innerWidth, window.innerHeight);
+  resizeWindow(window.innerWidth);
 }, false);
 
-function resizeWindow(window_width, window_height) {
+function resizeWindow(window_width) {
   var width  = window_width * 2/5;
   var height = width;
   ctx.canvas.width  = width;
@@ -13,12 +13,21 @@ function resizeWindow(window_width, window_height) {
 
 resizeWindow(window.innerWidth, window.innerHeight);
 
+
 let pixels = [];
+function setPixel(x, y, col) {
+  pixels[x][y] = col;
+}
 for (let i = 0; i < 128; i++) {
     pixels[i] = [];
     for (let j = 0; j < 128; j++) {
-        pixels[i][j] = "#ffffff";
+        pixels[i][j] = (i+j) % 2 === 0 ? "#ffffff": "#121212";
     }
+}
+
+// returns 
+function getInputs() {
+  return
 }
 
 function render() {

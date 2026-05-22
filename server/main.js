@@ -86,12 +86,13 @@ app.get('/g/:id', checkUser, (req, res) => {
   
   const id = req.params.id;
 
-  database.get_game(id, (err, rows) => {
+  database.get_game(id, (err, game) => {
     if (err) { console.log(err); }
-    else if (rows) {
+    else if (game) {
       const data = {
-        name: rows.name,
-        session: req.session
+        name: game.name,
+        session: req.session,
+        script: game.game_file
       }
       if (data.name) res.render('game_page', data);
     }
@@ -248,10 +249,10 @@ app.post("/api/upload_game", (req, res) => {
   const fileExtension = path.extname(fileName).toLowerCase();
 
   // Only allow certain file extensions
-  // if (!['.png', '.jpg', '.jpeg', '.txt'].includes(fileExtension)) {
-  //   res.status(400).send('Invalid file type');
-  //   return;
-  // }
+  if (!['.js'].includes(fileExtension)) {
+    res.status(400).send('Invalid file type');
+    return;
+  }
 
   const savePath = path.join(__dirname, '../public/games/code', fileName);
 
@@ -261,6 +262,8 @@ app.post("/api/upload_game", (req, res) => {
     }
 
     fs.writeFileSync(savePath, fileData);
+
+    database.create_game(fileName, "/games/covers/image.jpeg", `/games/code/${fileName}`);
 
     res.send({ message: "File uploaded successfully" });
   } catch (error) {
