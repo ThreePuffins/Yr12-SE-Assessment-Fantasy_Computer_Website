@@ -24,21 +24,26 @@ app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 
 async function checkUser(req, res, next) {
-  const token = req.cookies.jwt_refresh;
-  if (!token) {
-    next();
-    return;
-  }
-  jwt.verify(token, process.env.JWT_SECRET, async (err, decoded) => {
-    if (err) {
+  try {
+    const token = req.cookies.jwt_refresh;
+    if (!token) {
       next();
       return;
     }
-    database.get_user_by_id(decoded.id, (err, rows) => {
-      req.session = {user: decoded, username: rows.username};
-      next();
+    jwt.verify(token, process.env.JWT_SECRET, async (err, decoded) => {
+      if (err) {
+        next();
+        return;
+      }
+      database.get_user_by_id(decoded.id, (err, rows) => {
+        req.session = {user: decoded, username: rows.username};
+        next();
+      });
     });
-  });
+  } catch (error) {
+    console.log("authentication failed");
+    next();
+  }
 };
 
 app.set('view engine', 'ejs');
@@ -237,16 +242,17 @@ app.use("/api/upload_game", (req, res, next) => {
       res.status(413).send('File size exceeds limit');
       return;
     }
-    req.rawBody = Buffer.concat(data);
+    req.fileData = Buffer.concat(data);
     next();
   });
 })
 
 app.post("/api/upload_game", (req, res) => {
-  const fileData = req.rawBody;
+  const fileData = req.fileData;
   const originalFileName = req.headers['x-file-name'];
-  const fileName = path.basename(originalFileName); // Avoid path traversal
+  const fileName = path.basename(originalFileName);
   const fileExtension = path.extname(fileName).toLowerCase();
+  const title = req.headers['title'];
 
   // Only allow certain file extensions
   if (!['.js'].includes(fileExtension)) {
@@ -254,18 +260,16 @@ app.post("/api/upload_game", (req, res) => {
     return;
   }
 
-  const savePath = path.join(__dirname, '../public/games/code', fileName);
-
   try {
     if (!fs.existsSync(path.join(__dirname, '../public/games/code'))) {
       fs.mkdirSync(path.join(__dirname, '../public/games/code'), { recursive: true });
     }
 
-    fs.writeFileSync(savePath, fileData);
-
-    database.create_game(fileName, "/games/covers/image.jpeg", `/games/code/${fileName}`);
-
-    res.send({ message: "File uploaded successfully" });
+    database.create_game(title, "/games/covers/image.jpeg", (err, id) => {
+      const savePath = path.join(__dirname, '../public/games/code', id + ".js");
+      fs.writeFileSync(savePath, fileData);
+      res.send({ message: "File uploaded successfully" });
+    });
   } catch (error) {
     res.status(500).send({ message: "Failed to upload file", error: error.message });
   }

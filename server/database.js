@@ -9,13 +9,20 @@ db.serialize(() => {
 
     // Fills games with placeholders for display purposes
     for (let i = 0; i < 10; i++) {
-        create_game(`Ipsum${i}`, `/games/covers/image.jpeg`, `/games/code/uh.js`);
+        create_game(`Ipsum${i}`, `/games/covers/image.jpeg`, (err, id) => {});
     }
 });
 
-function create_game(name, cover_image, game_file){
-    const stmt = db.prepare('INSERT INTO games (name, cover_image, game_file) VALUES (?, ?, ?)');
-    stmt.all([name, cover_image, game_file]);
+function create_game(name, cover_image, cb){
+    const sql = 'INSERT INTO games(name, cover_image) VALUES (?, ?)';
+    db.run(sql, [name, cover_image], function(err) {
+        if (err) {
+            cb(err, null);
+            return;
+        }
+        db.run('UPDATE games SET game_file=("/games/covers/" + (?)) WHERE id=(?)', [this.lastID,this.lastID])
+        cb(null, this.lastID);
+    });
 };
 
 function get_game(id, cb) {
@@ -77,4 +84,4 @@ function edit_user(id, username, email, password) {
     const stmt = db.prepare("UPDATE users SET username=(?), email=(?), password=(?) WHERE id = (?)");
     stmt.all([username, email, password, id]);
 }
-module.exports = { get_game, get_user_by_id, create_user, get_user_by_username, get_games, delete_user, edit_user};
+module.exports = { get_game, get_user_by_id, create_user, get_user_by_username, get_games, delete_user, edit_user, create_game};

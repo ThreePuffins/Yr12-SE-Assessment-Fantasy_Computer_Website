@@ -7,10 +7,17 @@
 <body>
   <%- include('header.ejs') %>
   <div class="main-div">
-    <input type="file" id="file-input">
+    <% if (session) {%>
+    <label for="title"><b>Game Title</b></label>
+    <input id="game-title" type="text" placeholder="Enter Game Name" name="title">
+    <label for="program"><b>Select Game File</b></label>
+    <input type="file" id="program-input" name="program">
+    <label for="cover"><b>Select Cover File (Optional)</b></label>
+    <input type="file" id="cover-input" name="cover">
     <button id="upload-game">Upload</button>
-
-
+    <% } else { %>
+    <p> Log in to upload games </p>
+    <% } %>
   </div>
   <script src="/js/upload_game.js" type="module"></script>
 </body>
