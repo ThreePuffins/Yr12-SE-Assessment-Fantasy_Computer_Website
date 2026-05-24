@@ -24,36 +24,28 @@ app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 
 async function checkUser(req, res, next) {
-  try {
-    const token = req.cookies.jwt_refresh;
-    if (!token) {
+  const token = req.cookies.jwt_refresh;
+  if (!token) {
+    next();
+    return;
+  }
+  jwt.verify(token, process.env.JWT_SECRET, async (err, decoded) => {
+    if (err) {
       next();
       return;
     }
-    jwt.verify(token, process.env.JWT_SECRET, async (err, decoded) => {
-      if (err) {
-        next();
-        return;
-      }
-      database.get_user_by_id(decoded.id, (err, rows) => {
-        req.session = {user: decoded, username: rows.username};
-        next();
-      });
+    database.get_user_by_id(decoded.id, (err, rows) => {
+      if (!rows) {next(); return;}
+      req.session = {user: decoded, username: rows.username};
+      next();
     });
-  } catch (error) {
-    console.log("authentication failed");
-    next();
-  }
+  });
 };
 
 app.set('view engine', 'ejs');
 app.set('views', './public/views');
 
 app.get('/', checkUser, (req, res) => {
-  res.render('index', {session: req.session})
-});
-
-app.get('/about', checkUser, (req, res) => {
   res.render('index', {session: req.session})
 });
 
@@ -232,7 +224,7 @@ app.get("/upg", checkUser, (req, res) => {
   res.render("upload_game", {session: req.session});
 });
 
-app.use("/api/upload_game", (req, res, next) => {
+app.use("/auth/upload_game", (req, res, next) => {
   let data = [];
   req.on('data', chunk => {
     data.push(chunk);
@@ -247,7 +239,12 @@ app.use("/api/upload_game", (req, res, next) => {
   });
 })
 
-app.post("/api/upload_game", (req, res) => {
+app.post("/auth/upload_game", checkUser, (req, res) => {
+  // Remove edge case if user is somehow uploading a game without being logged in
+  if (!req.session) {
+    return;
+  }
+
   const fileData = req.fileData;
   const originalFileName = req.headers['x-file-name'];
   const fileName = path.basename(originalFileName);
@@ -265,7 +262,7 @@ app.post("/api/upload_game", (req, res) => {
       fs.mkdirSync(path.join(__dirname, '../public/games/code'), { recursive: true });
     }
 
-    database.create_game(title, "/games/covers/image.jpeg", (err, id) => {
+    database.create_game(title, "/games/covers/image.jpeg", req.session.username, (err, id) => {
       const savePath = path.join(__dirname, '../public/games/code', id + ".js");
       fs.writeFileSync(savePath, fileData);
       res.send({ message: "File uploaded successfully" });

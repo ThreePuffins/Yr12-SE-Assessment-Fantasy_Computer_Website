@@ -2,25 +2,27 @@ const sqlite = require('sqlite3')
 const db = new sqlite.Database(":memory:")
 
 db.serialize(() => {
-    const init_game = 'CREATE TABLE IF NOT EXISTS games (id INTEGER PRIMARY KEY, name TEXT, cover_image TEXT, game_file TEXT)';
+    const init_game = 'CREATE TABLE IF NOT EXISTS games (id INTEGER PRIMARY KEY, name TEXT, cover_image TEXT, game_file TEXT, user TEXT)';
     db.run(init_game);
-    const init_users = 'CREATE TABLE IF NOT EXISTS users (id INTEGER PRIMARY KEY, username TEXT, email TEXT, password TEXT)';
+    const init_users = 'CREATE TABLE IF NOT EXISTS users (id INTEGER PRIMARY KEY, username TEXT, email TEXT, password TEXT, games TEXT)';
     db.run(init_users);
+    
 
     // Fills games with placeholders for display purposes
     for (let i = 0; i < 10; i++) {
-        create_game(`Ipsum${i}`, `/games/covers/image.jpeg`, (err, id) => {});
+        create_game(`Ipsum${i}`, `/games/covers/image.jpeg`, "person", (err, id) => {console.log(id)});
     }
+    get_games((err, rows) => {console.log(rows);});
 });
 
-function create_game(name, cover_image, cb){
-    const sql = 'INSERT INTO games(name, cover_image) VALUES (?, ?)';
-    db.run(sql, [name, cover_image], function(err) {
+function create_game(name, cover_image, creator, cb){
+    const sql = 'INSERT INTO games(name, cover_image, creator) VALUES (?, ?, ?)';
+    db.run(sql, [name, cover_image, creator], function(err) {
         if (err) {
             cb(err, null);
             return;
         }
-        db.run('UPDATE games SET game_file=("/games/covers/" + (?)) WHERE id=(?)', [this.lastID,this.lastID])
+        db.run('UPDATE games SET game_file=("/games/code/" + (?)) WHERE id=(?)', [this.lastID, this.lastID])
         cb(null, this.lastID);
     });
 };
@@ -71,7 +73,7 @@ function get_user_by_username(username, cb) {
 }
 
 function create_user(username, email, password) {
-    const stmt = db.prepare("INSERT INTO users (username, email, password) VALUES (?, ?, ?)");
+    const stmt = db.prepare("INSERT INTO users (username, email, password, games) VALUES (?, ?, ?, {})");
     stmt.all([username, email, password]);
 }
 
@@ -80,8 +82,8 @@ function delete_user(id) {
     stmt.all(id)
 }
 
-function edit_user(id, username, email, password) {
-    const stmt = db.prepare("UPDATE users SET username=(?), email=(?), password=(?) WHERE id = (?)");
-    stmt.all([username, email, password, id]);
+function edit_user(id, username, email, password, games) {
+    const stmt = db.prepare("UPDATE users SET username=(?), email=(?), password=(?), games=(?) WHERE id = (?)");
+    stmt.all([username, email, password, id, games]);
 }
 module.exports = { get_game, get_user_by_id, create_user, get_user_by_username, get_games, delete_user, edit_user, create_game};
