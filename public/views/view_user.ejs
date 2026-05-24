@@ -10,8 +10,25 @@
   <div class="main-div">
     <h1><%= username %></h1>
     <hr>
-    <% if (games) { %>
-
+    <% if (games.length > 0) { %>
+      <div class="user-games-container">
+        <% games.forEach(function(game) { %>
+        <div style="display: flex; flex-direction: row;">
+          <div class="game" id="g<%= game.id %>">
+              <a href="/g/<%= game.id %>">
+                  <div class="game_cover" style="background-image: url('<%= game.cover_image %>')"></div>
+              </a>
+              <div class="banner"> 
+                  <a class="game_title" href="/g/<%= game.id %>"> <%= game.name %> </a>
+              </div>
+          </div>
+          <div class="description">
+            <h1> <%= game.name %>: </h1>
+            <p> <%= game.description %> </p>
+          </div>
+        </div>
+        <% }); %>
+      </div>
     <% } else { %>
       <p><%= username %> has not released any games</p>
     <% } %>

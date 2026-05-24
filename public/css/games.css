@@ -139,3 +139,19 @@ canvas {
 a {
   color: rgb(161, 173, 211);
 }
+
+.user-games-container {
+  display: flex;
+  flex-direction: column;
+}
+
+.description {
+  margin:auto;
+  margin-left:2%;
+  display:block;
+  padding: 1em;
+  overflow:hidden;
+  background-color:#061a2c;
+  width: 100%;
+  height: 324px;
+}

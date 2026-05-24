@@ -55,25 +55,27 @@ app.get('/u/:id', checkUser, (req, res) => {
   database.get_user_by_id(id, (err, rows) => {
     if (err) { console.log(err); }
     else if (rows) {
-      if (req.session) {
-        if (id == req.session.user.id) {
-          const data = {
-            username: rows.username,
-            password: rows.password,
-            email: rows.email,
-            session: req.session, 
-            games: null
+      database.get_games(async (err, games) => {
+        if (req.session) {
+          if (id == req.session.user.id) {
+            const data = {
+              username: rows.username,
+              password: rows.password,
+              email: rows.email,
+              session: req.session, 
+              games: games.filter((game) => Number(game.user) === Number(req.session.user.id))
+            }
+            res.render('user', data);
+            return;
           }
-          res.render('user', data);
-          return;
         }
-      }
-      const data = {
-        username: rows.username,
-        session: req.session, 
-        games: null
-      }
-      res.render('view_user', data)
+        const data = {
+          username: rows.username,
+          session: req.session, 
+          games: games.filter((game) =>  Number(game.user) === Number(id))
+        }
+        res.render('view_user', data)
+      });
     }
     else res.render('404', {session: req.session});
   })

@@ -6,7 +6,6 @@ db.serialize(() => {
     db.run(init_game);
     const init_users = 'CREATE TABLE IF NOT EXISTS users (id INTEGER PRIMARY KEY, username TEXT, email TEXT, password TEXT, games TEXT)';
     db.run(init_users);
-    
 
     // Fills games with placeholders for display purposes
     for (let i = 0; i < 10; i++) {
@@ -15,14 +14,14 @@ db.serialize(() => {
     create_user("random_guy", "email", "password");
 });
 
-function create_game(name, cover_image, creator, description, cb){
+function create_game(name, cover_image, user, description, cb){
     const sql = 'INSERT INTO games (name, cover_image, user, description) VALUES (?, ?, ?, ?)';
-    db.run(sql, [name, cover_image, creator, description], function(err) {
+    db.run(sql, [name, cover_image, user, description], function(err) {
         if (err) {
             cb(err, null);
             return;
         }
-        db.run('UPDATE games SET game_file=(?) WHERE id=(?)', ["/games/code/" + this.lastID + ".js", this.lastID])
+        db.run('UPDATE games SET game_file=(?) WHERE id=(?)', ["/games/code/" + this.lastID + ".js", this.lastID]);
         cb(null, this.lastID);
     });
 };
@@ -86,4 +85,4 @@ function edit_user(id, username, email, password, games) {
     const stmt = db.prepare("UPDATE users SET username=(?), email=(?), password=(?), games=(?) WHERE id = (?)");
     stmt.all([username, email, password, id, games]);
 }
-module.exports = { get_game, get_user_by_id, create_user, get_user_by_username, get_games, delete_user, edit_user, create_game};
+module.exports = {get_game, get_user_by_id, create_user, get_user_by_username, get_games, delete_user, edit_user, create_game};
