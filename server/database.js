@@ -10,13 +10,12 @@ db.serialize(() => {
 
     // Fills games with placeholders for display purposes
     for (let i = 0; i < 10; i++) {
-        create_game(`Ipsum${i}`, `/games/covers/image.jpeg`, "person", (err, id) => {console.log(id)});
+        create_game(`Ipsum${i}`, `/games/covers/image.jpeg`, "person", (err, id) => {});
     }
-    get_games((err, rows) => {console.log(rows);});
 });
 
 function create_game(name, cover_image, creator, cb){
-    const sql = 'INSERT INTO games(name, cover_image, creator) VALUES (?, ?, ?)';
+    const sql = 'INSERT INTO games (name, cover_image, user) VALUES (?, ?, ?)';
     db.run(sql, [name, cover_image, creator], function(err) {
         if (err) {
             cb(err, null);
