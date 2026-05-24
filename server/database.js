@@ -2,16 +2,22 @@ const sqlite = require('sqlite3')
 const db = new sqlite.Database(":memory:")
 
 db.serialize(() => {
-    const init_game = 'CREATE TABLE IF NOT EXISTS games (id INTEGER PRIMARY KEY, name TEXT, cover_image TEXT, game_file TEXT, user INT, description TEXT)';
-    db.run(init_game);
-    const init_users = 'CREATE TABLE IF NOT EXISTS users (id INTEGER PRIMARY KEY, username TEXT, email TEXT, password TEXT, games TEXT)';
+    db.run("PRAGMA foreign_keys = ON;");
+
+    const init_users = 'CREATE TABLE IF NOT EXISTS users (id INTEGER PRIMARY KEY, username TEXT, email TEXT,'
+        + 'password TEXT, games TEXT)';
     db.run(init_users);
+
+    const init_game = 'CREATE TABLE IF NOT EXISTS games (id INTEGER PRIMARY KEY, name TEXT, cover_image TEXT, '
+        + 'game_file TEXT, user INT, description TEXT, FOREIGN KEY(user) REFERENCES users(id) ON DELETE CASCADE)';
+    db.run(init_game);
+
+    create_user("random_guy", "email", "password");
 
     // Fills games with placeholders for display purposes
     for (let i = 0; i < 10; i++) {
-        create_game(`Ipsum${i}`, `/games/covers/image.jpeg`, "1", "Lorem ipsum dolores smth smth decription", (err, id) => {});
+        create_game(`Ipsum${i}`, `/games/covers/image.jpeg`, "1", "Lorem ipsum dolores smth smth Lorem ipsum dolores smth smth Lorem ipsum dolores smth smth decription decription decription decription", (err, id) => {});
     }
-    create_user("random_guy", "email", "password");
 });
 
 function create_game(name, cover_image, user, description, cb){
@@ -78,7 +84,7 @@ function create_user(username, email, password) {
 
 function delete_user(id) {
     const stmt = db.prepare("DELETE from users WHERE id = (?)");
-    stmt.all(id)
+    stmt.all([id]);
 }
 
 function edit_user(id, username, email, password, games) {

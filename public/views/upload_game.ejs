@@ -9,14 +9,14 @@
   <%- include('header.ejs') %>
   <div class="main-div">
     <% if (session) {%>
-    <label for="title"><b>Game Title</b></label>
-    <input id="game-title" type="text" placeholder="Enter Game Name" name="title">
-    <label for="description"><b>Description</b></label>
-    <input id="game-description" type="text" placeholder="Enter Description" name="description">
-    <label for="program"><b>Select Game File</b></label>
-    <input type="file" id="program-input" name="program">
-    <label for="cover"><b>Select Cover File (Optional)</b></label>
-    <input type="file" id="cover-input" name="cover">
+    <label for="game-title"><b>Game Title</b></label>
+    <input id="game-title" type="text" placeholder="Enter Game Name">
+    <label for="game-description"><b>Description</b></label>
+    <input id="game-description" type="text" placeholder="Enter Description">
+    <label for="program-input"><b>Select Game File</b></label>
+    <input type="file" id="program-input">
+    <label for="cover-input"><b>Select Cover File (Optional)</b></label>
+    <input type="file" id="cover-input">
     <button id="upload-game" class="updatebtn">Upload</button>
     <% } else { %>
     <p> Log in to upload games </p>

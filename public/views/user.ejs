@@ -11,10 +11,41 @@
     <h1><%= username %> (This is your profile)</h1>
     <hr>
     <% if (games.length > 0) { %>
-
+      <div class="user-games-container">
+        <% games.forEach(function(game) { %>
+        <div style="display: flex; flex-direction: row;">
+          <div class="game" id="g<%= game.id %>">
+              <a href="/g/<%= game.id %>">
+                  <div class="game_cover" style="background-image: url('<%= game.cover_image %>')"></div>
+              </a>
+              <div class="banner"> 
+                  <a class="game_title" href="/g/<%= game.id %>"> <%= game.name %> </a>
+              </div>
+          </div>
+          <div class="description">
+            <h1> <%= game.name %>: </h1>
+            <textarea class="description-input" id="game-description-<%= game.id %>" type="text" placeholder="Enter Description" 
+             name="description" style="resize: none;"><%= game.description%></textarea>
+          </div>
+        </div>
+        <div style="display: flex; flex-direction: row;">
+          <div style="display: flex; flex-direction: column;">
+            <label for="program-input-<%= game.id %>"><b>Select Game File</b></label>
+            <input type="file" id="program-input-<%= game.id %>">
+          </div>
+          <div style="display: flex; flex-direction: column;">
+            <label for="cover-input-<%= game.id %>"><b>Select Cover File</b></label>
+            <input type="file" id="cover-input-<%= game.id %>">
+          </div>
+          <button id="uploadgame-<%= game.id %>" class="updatebtn">Update</button>
+        </div>
+        <hr style="width:100%;">
+        <% }); %>
+      </div>
     <% } else { %>
       <p>You haven't released any games. Consider <a href="/upg">uploading</a> a game.</p>
     <% } %>
   </div>
+  <script src="/js/user_page.js" type="module"></script>
 </body>
 </html>

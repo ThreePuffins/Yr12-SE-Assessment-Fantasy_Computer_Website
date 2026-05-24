@@ -135,7 +135,7 @@ app.get('/settings', checkUser, (req, res) => {
 
 app.post("/auth/delete_account", checkUser, (req, res) => {
   if (req.session) {
-    database.delete_user(req.session.id);
+    database.delete_user(req.session.user.id);
   }
   res.redirect("/auth/log_out");
 });

@@ -1,14 +1,16 @@
-var upload = document.getElementById('upload-game');
-var title = document.getElementById('game-title');
-var description = document.getElementById('game-description');
+const upload = document.getElementById('upload-game');
+const title = document.getElementById('game-title');
+const description = document.getElementById('game-description');
+const cover = document.getElementById("cover-input");
 
 upload.addEventListener('mousedown', (event) => {
-    var fileInput = document.getElementById('program-input');
+    const fileInput = document.getElementById('program-input');
     if (!title.value || !fileInput.files || !description.value) {
-        alert('All (non-optional) fields are required.');
+        window.alert('All (non-optional) fields are required.');
         return;
     }
-    var file = fileInput.files[0];
+    const file = fileInput.files[0];
+
     var xhr = new XMLHttpRequest();
     xhr.open("POST", "/auth/upload_game", true);
     xhr.setRequestHeader("Content-Type", "application/octet-stream");
@@ -25,5 +27,5 @@ upload.addEventListener('mousedown', (event) => {
         }
     };
     
-    xhr.send(file);
+    xhr.send(data);
 });
