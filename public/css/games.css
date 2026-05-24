@@ -149,6 +149,11 @@ a {
   min-height: 204px;
 }
 
+.title-input {
+  background-color:#031220;
+  color: #bcd9f9;
+}
+
 input[type=text], input[type=password] {
   width: 440px;
   padding: 10px;
@@ -164,4 +169,3 @@ input[type=text]:focus, input[type=password]:focus {
   background-color: rgb(182, 192, 225);
   outline: none;
 }
-

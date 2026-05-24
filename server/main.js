@@ -271,7 +271,7 @@ app.post("/auth/upload_game", checkUser, (req, res) => {
       fs.mkdirSync(path.join(__dirname, '../public/games/code'), { recursive: true });
     }
 
-    database.create_game(title, "/games/covers/image.jpeg", req.session.user.id, description, (err, id) => {
+    database.create_game(title, "/games/covers/default.png", req.session.user.id, description, (err, id) => {
       const savePath = path.join(__dirname, '../public/games/code', id + ".js");
       fs.writeFileSync(savePath, fileData);
       res.send({ message: "File uploaded successfully" });
@@ -279,6 +279,61 @@ app.post("/auth/upload_game", checkUser, (req, res) => {
   } catch (error) {
     res.status(500).send({ message: "Failed to upload file", error: error.message });
   }
+});
+
+app.use("/auth/update_game", (req, res, next) => {
+  let data = [];
+  req.on('data', chunk => {
+    data.push(chunk);
+  });
+  req.on('end', () => {
+    if (req.headers['content-length'] > 10485760) {
+      res.status(413).send('File size exceeds limit');
+      return;
+    }
+    req.fileData = Buffer.concat(data);
+    next();
+  });
+})
+
+app.post("/auth/update_game", checkUser, (req, res) => {
+  // Remove edge case if user is somehow updating a game without being logged in
+  if (!req.session) {
+    return;
+  }
+  const type = req.headers['type'];
+  const game_id = req.headers['game-id']
+  try {
+    database.get_game(game_id, (err, rows) => {
+      const fileData = req.fileData;
+      const originalFileName = req.headers['x-file-name'];
+      const fileName = path.basename(originalFileName);
+      const fileExtension = path.extname(fileName).toLowerCase();
+      const title = req.headers['title'];
+      const description = req.headers['description'];
+      if (type === "program") {
+        if (!['.js'].includes(fileExtension)) {
+        res.status(400).send('Invalid file type');
+        return;
+        }
+        const savePath = path.join(__dirname, '../public/games/code', game_id + fileExtension);
+        fs.writeFileSync(savePath, fileData);
+      }
+      if (type === "cover") {
+        const savePath = path.join(__dirname, '../public/games/covers', game_id + fileExtension);
+        fs.writeFileSync(savePath, fileData);
+      }
+      database.edit_game(game_id, title, type === "cover" ? `/games/covers/${game_id + fileExtension}` : rows.cover_image, description);
+      res.send({ message: "File uploaded successfully" });
+    })
+  } catch (error) {
+    res.status(500).send({ message: "Failed to upload file", error: error.message });
+  }
+});
+
+app.post("/auth/delete_game", checkUser, (req, res) => {
+  database.delete_game(req.body.id);
+  res.json({ fail: false });
 });
 
 app.use(checkUser, function(req, res) {

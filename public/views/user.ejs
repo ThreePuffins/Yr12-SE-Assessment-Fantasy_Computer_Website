@@ -23,9 +23,10 @@
               </div>
           </div>
           <div class="description">
-            <h1> <%= game.name %>: </h1>
+            <textarea class="title-input" id="title-description-<%= game.id %>" type="text" placeholder="Enter Title" 
+              style="resize: none;"><%= game.name %></textarea>
             <textarea class="description-input" id="game-description-<%= game.id %>" type="text" placeholder="Enter Description" 
-             name="description" style="resize: none;"><%= game.description%></textarea>
+              style="resize: none;"><%= game.description%></textarea>
           </div>
         </div>
         <div style="display: flex; flex-direction: row;">
@@ -38,6 +39,8 @@
             <input type="file" id="cover-input-<%= game.id %>">
           </div>
           <button id="uploadgame-<%= game.id %>" class="updatebtn">Update</button>
+          <button id="deletegame-<%= game.id %>" class="btn btn-danger deletebtn" style="margin-left: 4%"
+            onclick="document.getElementById('del-acc-overlay').style.display='block'">Delete</button>
         </div>
         <hr style="width:100%;">
         <% }); %>
@@ -47,5 +50,18 @@
     <% } %>
   </div>
   <script src="/js/user_page.js" type="module"></script>
+
+  <div class="modal" id="del-acc-overlay">
+  <form id="delete-account-form" class="modal-content" method="POST">
+    <div class="form-container">
+      <h1>Are you sure?</h1>
+      <hr>
+      <button type="button" onclick="document.getElementById('del-acc-overlay').style.display='none'" class="cancelbtn">Cancel</button>
+      <button type="submit" class="btn btn-danger">Delete Game</button>
+    </div>
+  </form>
+  <script src="/js/delete_game.js" type="module"></script>
+</div>
 </body>
 </html>
+

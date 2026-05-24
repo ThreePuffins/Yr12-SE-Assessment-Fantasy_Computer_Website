@@ -1,12 +1,11 @@
 const upload = document.getElementById('upload-game');
 const title = document.getElementById('game-title');
 const description = document.getElementById('game-description');
-const cover = document.getElementById("cover-input");
 
 upload.addEventListener('mousedown', (event) => {
     const fileInput = document.getElementById('program-input');
     if (!title.value || !fileInput.files || !description.value) {
-        window.alert('All (non-optional) fields are required.');
+        window.alert('All fields are required.');
         return;
     }
     const file = fileInput.files[0];
@@ -27,5 +26,5 @@ upload.addEventListener('mousedown', (event) => {
         }
     };
     
-    xhr.send(data);
+    xhr.send(file);
 });

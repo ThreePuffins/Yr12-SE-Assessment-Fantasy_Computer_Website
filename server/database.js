@@ -16,7 +16,7 @@ db.serialize(() => {
 
     // Fills games with placeholders for display purposes
     for (let i = 0; i < 10; i++) {
-        create_game(`Ipsum${i}`, `/games/covers/image.jpeg`, "1", "Lorem ipsum dolores smth smth Lorem ipsum dolores smth smth Lorem ipsum dolores smth smth decription decription decription decription", (err, id) => {});
+        create_game(`Ipsum${i}`, `/games/covers/default.png`, "1", "Lorem ipsum dolores smth smth Lorem ipsum dolores smth smth Lorem ipsum dolores smth smth decription decription decription decription", (err, id) => {});
     }
 });
 
@@ -87,8 +87,19 @@ function delete_user(id) {
     stmt.all([id]);
 }
 
+function delete_game(id) {
+    const stmt = db.prepare("DELETE from games WHERE id = (?)");
+    stmt.all([id]);
+}
+
 function edit_user(id, username, email, password, games) {
     const stmt = db.prepare("UPDATE users SET username=(?), email=(?), password=(?), games=(?) WHERE id = (?)");
     stmt.all([username, email, password, id, games]);
 }
-module.exports = {get_game, get_user_by_id, create_user, get_user_by_username, get_games, delete_user, edit_user, create_game};
+
+function edit_game(id, name, cover_image, description) {
+    const stmt = db.prepare("UPDATE games SET name=(?), cover_image=(?), description=(?) WHERE id = (?)");
+    stmt.all([name, cover_image, description, id]);
+}
+module.exports = {delete_game, edit_game, get_game, get_user_by_id, 
+    create_user, get_user_by_username, get_games, delete_user, edit_user, create_game};
