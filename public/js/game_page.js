@@ -13,24 +13,68 @@ function resizeWindow(window_width) {
 
 resizeWindow(window.innerWidth, window.innerHeight);
 
+// up, down, left, right, z/c, x
+var inputs = 0b000000;
 
-let pixels = [];
-function setPixel(x, y, col) {
-  pixels[x][y] = col;
-}
-for (let i = 0; i < 128; i++) {
-    pixels[i] = [];
-    for (let j = 0; j < 128; j++) {
-        pixels[i][j] = (i+j) % 2 === 0 ? "#ffffff": "#121212";
-    }
-}
+document.addEventListener('keydown', (event) => {
+  switch (event.key) {
+    case "ArrowUp": 
+      inputs |= (1 << 5);
+      break;
+    case "ArrowDown": 
+      inputs |= (1 << 4);
+      break;
+    case "ArrowLeft": 
+      inputs |= (1 << 3);
+      break;
+    case "ArrowRight": 
+      inputs |= (1 << 2);
+      break;
+    case "c": 
+      inputs |= (1 << 1);
+      break;
+    case "z": 
+      inputs |= (1 << 1);
+      break;
+    case "x": 
+      inputs |= (1 << 0);
+      break;
+  }
+});
 
-// returns 
+document.addEventListener('keyup', (event) => {
+  switch (event.key) {
+    case "ArrowUp": 
+      inputs &= ~(1 << 5);
+      break;
+    case "ArrowDown": 
+      inputs &= ~(1 << 4);
+      break;
+    case "ArrowLeft": 
+      inputs &= ~(1 << 3);
+      break;
+    case "ArrowRight": 
+      inputs &= ~(1 << 2);
+      break;
+    case "c": 
+      inputs &= ~(1 << 1);
+      break;
+    case "z": 
+      inputs &= ~(1<< 1);
+      break;
+    case "x": 
+      inputs &= ~(1 << 0);
+      break;
+  }
+});
+
 function getInputs() {
-  return
+  return inputs;
 }
 
 function render() {
+  loop(getInputs());
+  pixels = getPixels();
   for (let x = 0; x < 128; x++) {
     for (let y = 0; y < 128; y++) {
       ctx.fillStyle = pixels[x][y]; 

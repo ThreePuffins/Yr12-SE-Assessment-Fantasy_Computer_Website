@@ -22,7 +22,7 @@ function create_game(name, cover_image, creator, description, cb){
             cb(err, null);
             return;
         }
-        db.run('UPDATE games SET game_file=("/games/code/" + (?)) WHERE id=(?)', [this.lastID, this.lastID])
+        db.run('UPDATE games SET game_file=(?) WHERE id=(?)', ["/games/code/" + this.lastID + ".js", this.lastID])
         cb(null, this.lastID);
     });
 };

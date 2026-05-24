@@ -10,8 +10,9 @@
     <h1 style="margin-bottom: 0"><%= game.name %></h1>
     <a href="/u/<%= game.user %>"> <%= username %> </a>
     <canvas id="canvas" oncontextmenu="event.preventDefault()" onmousedown="window.focus()"></canvas>
-    <script src="/js/game_page.js"></script>
+    <script src="/js/display.js"></script>
     <script src="<%= game.game_file %>"></script>
+    <script src="/js/game_page.js"></script>
     <p> <%= game.description %> </p>
   </div>
 </body>
