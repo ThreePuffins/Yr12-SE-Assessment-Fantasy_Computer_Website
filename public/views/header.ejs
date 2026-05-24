@@ -13,8 +13,8 @@
         </ul>
         <% if (!session) { %>
         <ul class="account">
-            <li onclick="document.getElementById('signup').style.display='block';">Signup</li>
-            <li onclick="document.getElementById('login').style.display='block';">Login</li>
+            <li><button class="accountbtn" onclick="document.getElementById('signup').style.display='block';">Signup</button></li>
+            <li><button class="accountbtn" onclick="document.getElementById('login').style.display='block';">Login</li>
         </ul>
         <% } else { %>
         <div class="account-settings">

@@ -87,3 +87,12 @@ body {
 * {
     font-family:'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
 }
+
+.accountbtn {
+    background-color: rgba(0,0,0,0);
+    color: rgb(161, 173, 211);
+    border: none;
+    cursor: pointer;
+    border-radius: 5px;
+    font-size: 24px;
+}
