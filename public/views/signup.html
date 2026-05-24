@@ -8,7 +8,6 @@
   <form id="signup-form" class="modal-content" method="POST" action="/auth/sign_up_process">
     <div class="form-container">
       <h1>Sign Up</h1>
-      <p>fill ts in already.</p>
       <hr>
       <label for="email"><b>Email</b></label>
       <input id="email" type="text" placeholder="Enter Email" name="email" required>
@@ -19,12 +18,8 @@
       <label for="psw"><b>Password</b></label>
       <input id="psw" type="password" placeholder="Enter Password" name="psw" required>
 
-      <label for="psw2"><b>Password but again</b></label>
+      <label for="psw2"><b>Confirm Password</b></label>
       <input id="psw2" type="password" placeholder="Confirm Password" name="psw2" required>
-
-      <label>
-        <input type="checkbox" checked="checked" names="remember" style="margin-bottom:15px"> tick me (please)
-      </label>
 
       <div class="clearfix">
         <button type="button" onclick="document.getElementById('signup').style.display='none'" class="cancelbtn">Cancel</button>
