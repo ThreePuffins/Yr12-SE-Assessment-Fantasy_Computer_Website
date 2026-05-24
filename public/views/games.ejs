@@ -12,13 +12,13 @@
                     &lt;
                 </div>
             <% } else { %>
-                <a href="/games/?page=<%=Number(page) - 1%>">
+                <a href="/games/?page=<%=Number(page) - 1%>&search=<%=search%>">
                     <div class="link-button">
                         &lt;
                     </div>
                 </a>
             <% } %>
-            <a href="/games/?page=<%=Number(page)%>">
+            <a href="/games/?page=<%=Number(page)%>&search=<%=search%>">
                 <div class="link-button">
                     Page <%=Number(page)%>
                 </div>
@@ -28,12 +28,19 @@
                     &gt;
                 </div>
             <% } else { %>
-                <a href="/games/?page=<%=Number(page) + 1%>">
+                <a href="/games/?page=<%=Number(page) + 1%>&search=<%=search%>">
                     <div class="link-button">
                         &gt;
                     </div>
                 </a>
             <% } %>
+            <div style="display: flex; align-items: center; height: 40px;">
+                <label for="searchbar" style="margin-left: 2%;"> Search: </label>
+                <input id="searchbar" type="text" placeholder="Search" name="searchbar" style="margin-left: 2%; margin-top: 30px;">
+                <% if (search) { %>
+                    <p style="margin-left: 2%;"> Currently searching for: <%= search%></p>
+                <% } %>
+            </div>
         </div>
         <div class="games-div">
             <% if (games.length > 0) { %>
@@ -53,5 +60,6 @@
             <% } %>
         </div>
     </div>
+    <script src="/js/games.js" type="module"></script>
 </body>
 </html>

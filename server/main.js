@@ -86,12 +86,14 @@ app.get('/g/:id', checkUser, (req, res) => {
   database.get_game(id, (err, game) => {
     if (err) { console.log(err); }
     else if (game) {
-      const data = {
-        name: game.name,
-        session: req.session,
-        script: game.game_file
-      }
-      if (data.name) res.render('game_page', data);
+      database.get_user_by_id(game.user, (err, rows) => {
+        const data = {
+          game: game,
+          username: rows.username,
+          session: req.session
+        }
+        res.render('game_page', data);
+      })
     }
     else res.render('404', {session: req.session});
   })
@@ -100,14 +102,18 @@ app.get('/g/:id', checkUser, (req, res) => {
 app.get('/games', checkUser, (req, res) => {
   var games_per_page = 8;
   var page = req.query["page"] ? req.query["page"] : 1;
+  var search = req.query["search"];
 
   database.get_games(async (err, rows) => {
     if (err) { console.log(err); }
     else if (rows) {
-      const display_games = rows.filter((game) => game.id >= games_per_page * (page - 1) && game.id < games_per_page * (page))
+      var display_games = rows.toReversed();
+      if (search) {display_games = display_games.filter((game) => game.name.toLowerCase().includes(search)); }
+      display_games = display_games.filter((game, index) => index >= games_per_page * (page - 1) && index < games_per_page * (page));
       const data = {
         games: display_games,
         page: page,
+        search: search,
         session: req.session
       }
       res.render('games', data);
@@ -250,6 +256,7 @@ app.post("/auth/upload_game", checkUser, (req, res) => {
   const fileName = path.basename(originalFileName);
   const fileExtension = path.extname(fileName).toLowerCase();
   const title = req.headers['title'];
+  const description = req.headers['description'];
 
   // Only allow certain file extensions
   if (!['.js'].includes(fileExtension)) {
@@ -262,7 +269,7 @@ app.post("/auth/upload_game", checkUser, (req, res) => {
       fs.mkdirSync(path.join(__dirname, '../public/games/code'), { recursive: true });
     }
 
-    database.create_game(title, "/games/covers/image.jpeg", req.session.username, (err, id) => {
+    database.create_game(title, "/games/covers/image.jpeg", req.session.user.id, description, (err, id) => {
       const savePath = path.join(__dirname, '../public/games/code', id + ".js");
       fs.writeFileSync(savePath, fileData);
       res.send({ message: "File uploaded successfully" });

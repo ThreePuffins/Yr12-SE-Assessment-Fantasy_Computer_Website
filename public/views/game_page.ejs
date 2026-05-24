@@ -2,15 +2,17 @@
 <html>
 <head>
   <link href="/css/games.css" rel="stylesheet" type="text/css">
-  <title><%= name %></title>
+  <title><%= game.name %></title>
 </head>
 <body>
   <%- include('header.ejs') %>
   <div class="main-div">
-  <h1><%= name %></h1>
+    <h1 style="margin-bottom: 0"><%= game.name %></h1>
+    <a href="/u/<%= game.user %>"> <%= username %> </a>
     <canvas id="canvas" oncontextmenu="event.preventDefault()" onmousedown="window.focus()"></canvas>
     <script src="/js/game_page.js"></script>
-    <script src="<%= script %>"></script>
+    <script src="<%= game.game_file %>"></script>
+    <p> <%= game.description %> </p>
   </div>
 </body>
 </html>

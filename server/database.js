@@ -2,7 +2,7 @@ const sqlite = require('sqlite3')
 const db = new sqlite.Database(":memory:")
 
 db.serialize(() => {
-    const init_game = 'CREATE TABLE IF NOT EXISTS games (id INTEGER PRIMARY KEY, name TEXT, cover_image TEXT, game_file TEXT, user TEXT)';
+    const init_game = 'CREATE TABLE IF NOT EXISTS games (id INTEGER PRIMARY KEY, name TEXT, cover_image TEXT, game_file TEXT, user INT, description TEXT)';
     db.run(init_game);
     const init_users = 'CREATE TABLE IF NOT EXISTS users (id INTEGER PRIMARY KEY, username TEXT, email TEXT, password TEXT, games TEXT)';
     db.run(init_users);
@@ -10,13 +10,14 @@ db.serialize(() => {
 
     // Fills games with placeholders for display purposes
     for (let i = 0; i < 10; i++) {
-        create_game(`Ipsum${i}`, `/games/covers/image.jpeg`, "person", (err, id) => {});
+        create_game(`Ipsum${i}`, `/games/covers/image.jpeg`, "1", "Lorem ipsum dolores smth smth decription", (err, id) => {});
     }
+    create_user("random_guy", "email", "password");
 });
 
-function create_game(name, cover_image, creator, cb){
-    const sql = 'INSERT INTO games (name, cover_image, user) VALUES (?, ?, ?)';
-    db.run(sql, [name, cover_image, creator], function(err) {
+function create_game(name, cover_image, creator, description, cb){
+    const sql = 'INSERT INTO games (name, cover_image, user, description) VALUES (?, ?, ?, ?)';
+    db.run(sql, [name, cover_image, creator, description], function(err) {
         if (err) {
             cb(err, null);
             return;
@@ -72,7 +73,7 @@ function get_user_by_username(username, cb) {
 }
 
 function create_user(username, email, password) {
-    const stmt = db.prepare("INSERT INTO users (username, email, password, games) VALUES (?, ?, ?, {})");
+    const stmt = db.prepare("INSERT INTO users (username, email, password, games) VALUES (?, ?, ?, '{}')");
     stmt.all([username, email, password]);
 }
 
