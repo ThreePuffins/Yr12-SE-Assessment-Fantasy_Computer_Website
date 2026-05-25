@@ -102,7 +102,7 @@ app.get('/g/:id', checkUser, (req, res) => {
 });
 
 app.get('/games', checkUser, (req, res) => {
-  var games_per_page = 8;
+  var games_per_page = 12;
   var page = req.query["page"] ? req.query["page"] : 1;
   var search = req.query["search"];
 
@@ -313,13 +313,17 @@ app.post("/auth/update_game", checkUser, (req, res) => {
       const description = req.headers['description'];
       if (type === "program") {
         if (!['.js'].includes(fileExtension)) {
-        res.status(400).send('Invalid file type');
-        return;
+          res.status(400).send('Invalid file type');
+          return;
         }
         const savePath = path.join(__dirname, '../public/games/code', game_id + fileExtension);
         fs.writeFileSync(savePath, fileData);
       }
       if (type === "cover") {
+        if (!(['.png'].includes(fileExtension) || ['.jpg'].includes(fileExtension))) {
+          res.status(400).send('Invalid file type');
+          return;
+        }
         const savePath = path.join(__dirname, '../public/games/covers', game_id + fileExtension);
         fs.writeFileSync(savePath, fileData);
       }

@@ -23,7 +23,7 @@
               </div>
           </div>
           <div class="description">
-            <textarea class="title-input" id="title-description-<%= game.id %>" type="text" placeholder="Enter Title" 
+            <textarea class="title-input" id="title-input-<%= game.id %>" type="text" placeholder="Enter Title" 
               style="resize: none;"><%= game.name %></textarea>
             <textarea class="description-input" id="game-description-<%= game.id %>" type="text" placeholder="Enter Description" 
               style="resize: none;"><%= game.description%></textarea>
@@ -38,7 +38,7 @@
             <label for="cover-input-<%= game.id %>"><b>Select Cover File</b></label>
             <input type="file" id="cover-input-<%= game.id %>">
           </div>
-          <button id="uploadgame-<%= game.id %>" class="updatebtn">Update</button>
+          <button id="uploadgame-<%= game.id %>" class="updatebtn btn">Update</button>
           <button id="deletegame-<%= game.id %>" class="btn btn-danger deletebtn" style="margin-left: 4%"
             onclick="document.getElementById('del-acc-overlay').style.display='block'">Delete</button>
         </div>

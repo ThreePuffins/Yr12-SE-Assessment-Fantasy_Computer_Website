@@ -10,12 +10,12 @@
   <div class="main-div">
     <% if (session) {%>
     <label for="game-title"><b>Game Title</b></label>
-    <input id="game-title" type="text" placeholder="Enter Game Name">
+    <input class="placeholder" id="game-title" type="text" placeholder="Enter Game Name">
     <label for="game-description"><b>Description</b></label>
-    <input id="game-description" type="text" placeholder="Enter Description">
+    <input class="placeholder" id="game-description" type="text" placeholder="Enter Description">
     <label for="program-input"><b>Select Game File</b></label>
     <input type="file" id="program-input">
-    <button id="upload-game" class="updatebtn">Upload</button>
+    <button id="upload-game" class="updatebtn btn">Upload</button>
     <% } else { %>
     <p> Log in to upload games </p>
     <% } %>

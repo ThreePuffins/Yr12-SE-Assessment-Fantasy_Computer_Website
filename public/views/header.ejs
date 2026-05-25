@@ -18,10 +18,12 @@
         </ul>
         <% } else { %>
         <div class="account-settings">
-            <li onclick="document.getElementById('acc-o').style.display='block';"><%= session.username %></li>
+            <li onclick="document.getElementById('acc-o').style.display='block';"><%= session.username %>
+                <span style="font-size: 0.7em">&#x25BC;</span></li>
             <div class="account-overlay" id="acc-o">
                 <ul class="account-action-list">
                     <li><a href="/settings">Settings</a></li>
+                    <li><a href="/u/<%= session.user.id %>">Account</a></li>
                     <li><a href="/auth/log_out">Log Out</a></li>
                 </ul>
             </div>
