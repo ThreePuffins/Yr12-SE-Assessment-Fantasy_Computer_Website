@@ -17,6 +17,7 @@
     "express": "^5.2.1",
     "fs": "^0.0.1-security",
     "jsonwebtoken": "^9.0.3",
+    "pa11y": "^9.1.1",
     "path": "^0.12.7",
     "sqlite3": "^6.0.1"
   }

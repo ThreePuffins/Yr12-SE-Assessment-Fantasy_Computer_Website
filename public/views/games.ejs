@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
+    <title>Wizem</title>
     <link href="/css/games.css" rel="stylesheet" type="text/css">
     <link rel="icon" type="image/x-icon" href="/images/favicon.ico">
 </head>
@@ -48,7 +49,7 @@
             <% if (games.length > 0) { %>
                 <% games.forEach(function(game) { %>
                 <div class="game" id="g<%= game.id %>">
-                    <a href="/g/<%= game.id %>">
+                    <a href="/g/<%= game.id %>" aria-label="<%= game.name %>">
                         <div class="game_cover" style="background-image: url('<%= game.cover_image %>')"></div>
                     </a>
                     <div class="banner"> 

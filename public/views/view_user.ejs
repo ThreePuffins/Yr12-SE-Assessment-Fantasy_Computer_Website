@@ -15,7 +15,7 @@
         <% games.forEach(function(game) { %>
         <div style="display: flex; flex-direction: row;">
           <div class="game" id="g<%= game.id %>">
-              <a href="/g/<%= game.id %>">
+              <a href="/g/<%= game.id %>" aria-label="<%= game.name %>">
                   <div class="game_cover" style="background-image: url('<%= game.cover_image %>')"></div>
               </a>
               <div class="banner"> 
