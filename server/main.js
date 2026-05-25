@@ -320,7 +320,7 @@ app.post("/auth/update_game", checkUser, (req, res) => {
         fs.writeFileSync(savePath, fileData);
       }
       if (type === "cover") {
-        if (!(['.png'].includes(fileExtension) || ['.jpg'].includes(fileExtension))) {
+        if (!(['.png'].includes(fileExtension) || ['.jpg'].includes(fileExtension)) || ['.jpeg'].includes(fileExtension)) {
           res.status(400).send('Invalid file type');
           return;
         }

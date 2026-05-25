@@ -1,0 +1,16 @@
+public/
+public/css/
+public/games/code/1.js
+public/games/code/2.js
+public/games/code/3.js
+public/games/code/4.js
+public/games/code/5.js
+public/games/code/6.js
+public/games/code/7.js
+public/games/code/8.js
+public/games/code/9.js
+public/games/code/10.js
+public/images
+public/js
+public/views
+server/
