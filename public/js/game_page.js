@@ -72,8 +72,8 @@ function getInputs() {
   return inputs;
 }
 
-function render() {
-  loop(getInputs());
+function render(timestamp) {
+  loop(getInputs(), timestamp);
   pixels = getPixels();
   for (let x = 0; x < 128; x++) {
     for (let y = 0; y < 128; y++) {
